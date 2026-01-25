@@ -1,5 +1,8 @@
 package com.azathorpe.competitivecompaniononidea;
 
+/**
+ * Many get&et methods are required for fastjson to work properly
+ */
 @SuppressWarnings("unused")
 public class OIMessage {
     String name;
