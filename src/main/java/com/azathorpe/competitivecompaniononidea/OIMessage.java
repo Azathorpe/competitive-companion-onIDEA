@@ -1,5 +1,6 @@
 package com.azathorpe.competitivecompaniononidea;
 
+@SuppressWarnings("unused")
 public class OIMessage {
     String name;
     String group;
