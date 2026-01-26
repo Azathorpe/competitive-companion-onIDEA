@@ -1,4 +1,4 @@
-package com.azathorpe.competitivecompaniononidea.actions;
+package com.azathorpe.cci.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
