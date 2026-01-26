@@ -1,10 +1,10 @@
-package com.azathorpe.competitivecompaniononidea;
+package com.azathorpe.cci.model;
 
 /**
  * Many get&et methods are required for fastjson to work properly
  */
 @SuppressWarnings("unused")
-public class OIMessage {
+public class Question {
     String name;
     String group;
     String url;
@@ -99,33 +99,35 @@ public class OIMessage {
                 ", testType='" + testType + '\'' +
                 '}';
     }
-}
 
-class TestCase {
-    String input;
-    String output;
 
-    public String getInput() {
-        return input;
+    class TestCase {
+        String input;
+        String output;
+
+        public String getInput() {
+            return input;
+        }
+
+        public void setInput(String input) {
+            this.input = input;
+        }
+
+        public String getOutput() {
+            return output;
+        }
+
+        public void setOutput(String output) {
+            this.output = output;
+        }
+
+        @Override
+        public String toString() {
+            return "TestCase{" +
+                    "input='" + input + '\'' +
+                    ", output='" + output + '\'' +
+                    '}';
+        }
     }
 
-    public void setInput(String input) {
-        this.input = input;
-    }
-
-    public String getOutput() {
-        return output;
-    }
-
-    public void setOutput(String output) {
-        this.output = output;
-    }
-
-    @Override
-    public String toString() {
-        return "TestCase{" +
-                "input='" + input + '\'' +
-                ", output='" + output + '\'' +
-                '}';
-    }
 }
