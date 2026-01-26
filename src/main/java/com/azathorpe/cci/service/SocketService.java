@@ -62,5 +62,7 @@ public class SocketService {
         System.out.println(message.getTestCases());
     }
 
-
+    public static boolean isIsRunning() {
+        return isRunning;
+    }
 }
