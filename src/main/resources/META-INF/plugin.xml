@@ -32,14 +32,27 @@
                     icon="com.azathorpe.cci.icons.CCIIcons.CCI_ICON"/>
     </extensions>
 
+    <applicationListeners>
+        <listener class="com.azathorpe.cci.listener.FileSwitchListener" topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
+    </applicationListeners>
+
     <actions>
+        <action id="cci.utils.getCurrentFileInfoAction" class="com.azathorpe.cci.actions.utils.GetCurrentFileInfoAction" text="Get Current File Info" description="Get current file info">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+
+        <action id="cci.utils.switchListenPortAction" class="com.azathorpe.cci.actions.utils.SwitchListenPortAction"
+                text="Switch Port Listener Func">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+
         <group id="cci.editor.group">
 
         </group>
 
         <group id="cci.editor.menu" class="com.azathorpe.cci.actions.editor.EditorMenuActionGroup" text="CCI Editor Menu"
                popup="true" description="Description of the action">
-            <reference id="cci.editor.group"/>
+<!--            <REF id="cci.editor.group"/>-->
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </group>
     </actions>
