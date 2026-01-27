@@ -2,6 +2,8 @@ package com.azathorpe.cci.model;
 
 /**
  * Many get&et methods are required for fastjson to work properly
+ * @author Azathorpe
+ * @version 1.0
  */
 @SuppressWarnings("unused")
 public class Question {
@@ -19,7 +21,7 @@ public class Question {
     }
 
     public void setName(String name) {
-        this.name = name.replaceAll(" ", "_");
+        this.name = name.replaceAll(" ", "_").replace("-","").replace(".", "").replace("(","").replace(")","");
     }
 
     public String getGroup() {
@@ -27,7 +29,7 @@ public class Question {
     }
 
     public void setGroup(String group) {
-        this.group = group.replace(" ", "_");
+        this.group = group.replace(" ", "_").replace("-","").replace(".", "").replace("(","").replace(")","");
     }
 
     public String getUrl() {
@@ -80,10 +82,13 @@ public class Question {
 
     public String getTestCases() {
         StringBuilder builder = new StringBuilder();
+        builder.append("{\"tests\":[");
         for (TestCase test : tests) {
-            builder.append("Input:\n").append(test.getInput());
-            builder.append("Output:\n").append(test.getOutput());
+            builder.append("{\"input\":\"").append(test.getInput().replace("\n", "\\n").replace("\"", "\\\"")).append("\",");
+            builder.append("\"output\":\"").append(test.getOutput().replace("\n", "\\n").replace("\"", "\\\"")).append("\"},");
         }
+        builder.deleteCharAt(builder.length() - 1);
+        builder.append("]}");
         return builder.toString();
     }
 
