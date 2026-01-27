@@ -1,6 +1,5 @@
 package com.azathorpe.cci.actions.utils;
 
-import com.intellij.ide.actions.CreateFileAction;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;

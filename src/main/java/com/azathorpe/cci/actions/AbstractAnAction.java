@@ -6,6 +6,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public class AbstractAnAction extends AnAction {
     public AbstractAnAction() {
         super("First Action","Description of First Action", IconLoader.getIcon("/META-INF/pluginIcon__.svg"));

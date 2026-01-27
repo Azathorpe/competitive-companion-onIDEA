@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public class EditorMenuActionGroup extends DefaultActionGroup {
     @Override
     public void update(AnActionEvent e) {

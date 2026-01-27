@@ -60,7 +60,7 @@ public class SocketService {
             throw new RuntimeException(e);
         }
 
-        System.out.println(builder.toString());
+        System.out.println(builder);
         Question message = JSON.parseObject(builder.toString(), Question.class);
         PersistenceStorage.saveQuestionFile(message);
         System.out.println(message);

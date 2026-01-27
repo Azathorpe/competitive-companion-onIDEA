@@ -1,10 +1,8 @@
 package com.azathorpe.cci.listener;
 
-import com.intellij.openapi.components.Service;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +18,9 @@ public class FileSwitchListener implements FileEditorManagerListener {
 //        FileEditorManagerListener.super.selectionChanged(event);
         //TODO: 加上判别NULL
         System.out.println("File was changed");
-        System.out.println("new " + event.getNewFile().getName());
+        if (event.getNewFile() != null) {
+            System.out.println("new " + event.getNewFile().getName());
+        }
     }
 
     @Override
