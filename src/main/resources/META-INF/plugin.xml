@@ -28,6 +28,13 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <!--    Setting    -->
+        <applicationConfigurable
+                parentId="tools"
+                instance="com.azathorpe.cci.settings.CCISettingsConfigurable"
+                displayName="Competitive Companion OnIDEA"
+                id="cci.settings"/>
+
         <toolWindow factoryClass="com.azathorpe.cci.window.WindowFactory" id="cci" anchor="left" secondary="true"
                     icon="com.azathorpe.cci.icons.CCIIcons.CCI_ICON"/>
     </extensions>
