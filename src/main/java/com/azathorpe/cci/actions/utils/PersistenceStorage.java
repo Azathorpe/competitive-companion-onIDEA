@@ -14,6 +14,7 @@ import java.nio.file.StandardCopyOption;
  * @author Azathorpe
  * @version 1.0
  */
+@SuppressWarnings("unused")
 public class PersistenceStorage {
     public static final String PROPERTIES_FILE_PATH = System.getProperty("user.home") + "/.cci/properties.json";
     /**
