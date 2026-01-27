@@ -44,6 +44,11 @@
     </applicationListeners>
 
     <actions>
+        <action id="cci.editor.setCurrentLanguageTemplateAction" class="com.azathorpe.cci.actions.editor.SetCurrentLanguageTemplate"
+                text="Set Current Language Template" description="Set current language template">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+
         <action id="cci.utils.getCurrentFileInfoAction" class="com.azathorpe.cci.actions.utils.GetCurrentFileInfoAction" text="Get Current File Info" description="Get current file info">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
@@ -52,10 +57,6 @@
                 text="Switch Port Listener Func">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
-
-        <group id="cci.editor.group">
-
-        </group>
 
         <group id="cci.editor.menu" class="com.azathorpe.cci.actions.editor.EditorMenuActionGroup" text="CCI Editor Menu"
                popup="true" description="Description of the action">
