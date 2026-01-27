@@ -131,4 +131,33 @@ public class PersistenceStorage {
     public static String getCODE_TEMPLATE_FILE_PATH(){
         return CODE_TEMPLATE_FILE_PATH + settings.getLanguage()+".template";
     }
+
+    /**
+     * 通过语言然后更改对应的模板文件
+     */
+    public static void changeTemplateFile(String content){
+        String language = settings.getLanguage();
+        String templateFilePath = CODE_TEMPLATE_FILE_PATH + language + ".template";
+        File file = checkFileExist(templateFilePath);
+        try(FileWriter fw = new FileWriter(file)){
+            fw.write(content);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 通过文件更改对应的模板文件(直接复制文件)
+     * @param file Files path
+     */
+    public static void changeTemplateFile(File file){
+        String language = settings.getLanguage();
+        String templateFilePath = CODE_TEMPLATE_FILE_PATH + language + ".template";
+        File targetFile = checkFileExist(templateFilePath);
+        try {
+            Files.copy(file.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
