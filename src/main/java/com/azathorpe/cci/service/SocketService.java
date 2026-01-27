@@ -1,8 +1,8 @@
 package com.azathorpe.cci.service;
 
 import com.alibaba.fastjson2.JSON;
+import com.azathorpe.cci.actions.utils.PersistenceStorage;
 import com.azathorpe.cci.model.Question;
-import com.intellij.openapi.components.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +10,10 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * @author Azathorpe
+ * @version 1.0
+ */
 public class SocketService {
     private static final int port = 10043;
 
@@ -58,6 +62,7 @@ public class SocketService {
 
         System.out.println(builder.toString());
         Question message = JSON.parseObject(builder.toString(), Question.class);
+        PersistenceStorage.saveQuestionFile(message);
         System.out.println(message);
         System.out.println(message.getTestCases());
     }

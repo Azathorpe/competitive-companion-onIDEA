@@ -1,5 +1,6 @@
 package com.azathorpe.cci.actions.utils;
 
+import com.intellij.ide.actions.CreateFileAction;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -7,6 +8,10 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Azathorpe
+ * @version 1.0
+ */
 public class GetCurrentFileInfoAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {

@@ -10,14 +10,17 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * 当文件被切换时，我们刷新侧边栏的数据
+ * @author Azathorpe
+ * @version 1.0
  */
 public class FileSwitchListener implements FileEditorManagerListener {
 
     @Override
     public void selectionChanged(@NotNull FileEditorManagerEvent event) {
 //        FileEditorManagerListener.super.selectionChanged(event);
+        //TODO: 加上判别NULL
         System.out.println("File was changed");
-        System.out.println("new" + event.getNewFile().getPath());
+        System.out.println("new " + event.getNewFile().getName());
     }
 
     @Override
