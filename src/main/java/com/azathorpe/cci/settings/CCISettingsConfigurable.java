@@ -5,7 +5,6 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.util.NlsContexts;
-import com.intellij.ui.components.JBTabbedPane;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;

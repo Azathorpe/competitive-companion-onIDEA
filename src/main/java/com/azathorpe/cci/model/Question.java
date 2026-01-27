@@ -106,7 +106,7 @@ public class Question {
     }
 
 
-    class TestCase {
+    public class TestCase {
         String input;
         String output;
 

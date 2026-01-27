@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 @Deprecated
 public class AbstractAnAction extends AnAction {
     public AbstractAnAction() {
-        super("First Action","Description of First Action", IconLoader.getIcon("/META-INF/pluginIcon__.svg"));
+        super("First Action", "Description of first action", IconLoader.getIcon("/META-INF/pluginIcon__.svg"));
     }
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
-        Messages.showMessageDialog(anActionEvent.getProject(), "Hello from My Plugin!", "Plugin Message", Messages.getInformationIcon());
+        Messages.showMessageDialog(anActionEvent.getProject(), "Hello from my plugin!", "Plugin Message", Messages.getInformationIcon());
     }
 }
