@@ -16,7 +16,6 @@ public class FileSwitchListener implements FileEditorManagerListener {
     @Override
     public void selectionChanged(@NotNull FileEditorManagerEvent event) {
 //        FileEditorManagerListener.super.selectionChanged(event);
-        //TODO: 加上判别NULL
         System.out.println("File was changed");
         if (event.getNewFile() != null) {
             System.out.println("new " + event.getNewFile().getName());
