@@ -59,14 +59,38 @@ public class PersistenceStorage {
      * @param questionGroup Question group
      */
     public static void saveSolvedFile(String questionName,String questionGroup){
-        //TODO: 根据不同语言选择不同模板
         System.out.println("Saving solved file for " + questionName);
+        //TODO: 根据不同语言选择不同模板
         String filePath = QUESTION_SRC_FOLDER_PATH + questionGroup + "/" + questionName + ".java";
         File file = checkFileExist(filePath);
         //复制Template文件内容到Solved文件
         try {
-            Files.copy(Path.of(getCODE_TEMPLATE_FILE_PATH()), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(Path.of(get_CODE_TEMPLATE_FILE_PATH()), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
             System.out.println("Copied template to " + filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get code template file as InputStream
+     * @param questionName question name
+     * @param questionGroup question group
+     * @return InputStream of code template file
+     */
+    public static void saveSolvedFileInTemplate(String questionName,String questionGroup) {
+        System.out.println("Loading code template file for " + questionName);
+        //TODO: 根据不同语言选择不同模板
+        String output_path = QUESTION_SRC_FOLDER_PATH + questionGroup + "/" + questionName + ".java";
+        File file = checkFileExist(output_path);
+        //读取Solved文件内容到InputStream
+
+        try(InputStream is = new FileInputStream(new File(get_CODE_TEMPLATE_FILE_PATH()))) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            while ((line = br.readLine()) != null) {
+
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -129,7 +153,7 @@ public class PersistenceStorage {
         checkFileExist(CODE_TEMPLATE_FILE_PATH + language + ".template");
     }
 
-    public static String getCODE_TEMPLATE_FILE_PATH(){
+    public static String get_CODE_TEMPLATE_FILE_PATH(){
         return CODE_TEMPLATE_FILE_PATH + settings.getLanguage()+".template";
     }
 
