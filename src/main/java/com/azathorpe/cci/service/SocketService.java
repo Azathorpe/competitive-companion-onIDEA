@@ -6,6 +6,7 @@ import com.azathorpe.cci.model.Question;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -62,7 +63,9 @@ public class SocketService {
 
         System.out.println(builder);
         Question message = JSON.parseObject(builder.toString(), Question.class);
-        PersistenceStorage.saveQuestionFile(message);
+//        PersistenceStorage.saveQuestionFile(message);
+        //Switch old way to get inputStream..
+        PersistenceStorage.saveSolvedFileInTemplate(message.getName(), message.getGroup());
         System.out.println(message);
         System.out.println(message.getTestCases());
     }
