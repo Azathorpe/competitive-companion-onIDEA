@@ -1,7 +1,7 @@
 package com.azathorpe.cci.service;
 
 import com.alibaba.fastjson2.JSON;
-import com.azathorpe.cci.actions.utils.PersistenceStorage;
+import com.azathorpe.cci.utils.PersistenceStorage;
 import com.azathorpe.cci.model.Question;
 
 import java.io.BufferedReader;

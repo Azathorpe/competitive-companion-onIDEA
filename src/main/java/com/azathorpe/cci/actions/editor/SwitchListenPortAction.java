@@ -1,4 +1,4 @@
-package com.azathorpe.cci.actions.utils;
+package com.azathorpe.cci.actions.editor;
 
 import com.azathorpe.cci.service.SocketService;
 import com.intellij.openapi.actionSystem.AnAction;

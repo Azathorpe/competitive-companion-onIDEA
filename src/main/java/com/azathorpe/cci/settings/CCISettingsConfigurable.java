@@ -1,6 +1,6 @@
 package com.azathorpe.cci.settings;
 
-import com.azathorpe.cci.actions.utils.PersistenceStorage;
+import com.azathorpe.cci.utils.PersistenceStorage;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.ComboBox;

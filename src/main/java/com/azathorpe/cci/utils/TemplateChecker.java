@@ -1,4 +1,4 @@
-package com.azathorpe.cci.actions.utils;
+package com.azathorpe.cci.utils;
 
 import org.jetbrains.annotations.Nullable;
 

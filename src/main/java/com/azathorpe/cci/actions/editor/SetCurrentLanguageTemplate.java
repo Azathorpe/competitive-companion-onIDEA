@@ -1,6 +1,6 @@
 package com.azathorpe.cci.actions.editor;
 
-import com.azathorpe.cci.actions.utils.PersistenceStorage;
+import com.azathorpe.cci.utils.PersistenceStorage;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;

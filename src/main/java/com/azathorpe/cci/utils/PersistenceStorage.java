@@ -1,4 +1,4 @@
-package com.azathorpe.cci.actions.utils;
+package com.azathorpe.cci.utils;
 
 import com.alibaba.fastjson2.JSON;
 import com.azathorpe.cci.model.Question;
@@ -89,7 +89,9 @@ public class PersistenceStorage {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = br.readLine()) != null) {
+                if(PatternUtils.containsTemplateVariable(line)){
 
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
