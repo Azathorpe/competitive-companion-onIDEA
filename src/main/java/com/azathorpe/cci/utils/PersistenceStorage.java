@@ -78,24 +78,15 @@ public class PersistenceStorage {
      * @param questionGroup question group
      * @return InputStream of code template file
      */
-    public static void saveSolvedFileInTemplate(String questionName,String questionGroup) {
+    public static void saveSolvedFileInTemplate(Question question) {
+        String questionName = question.getName();
+        String questionGroup = question.getGroup();
         System.out.println("Loading code template file for " + questionName);
         //TODO: 根据不同语言选择不同模板
         String output_path = QUESTION_SRC_FOLDER_PATH + questionGroup + "/" + questionName + ".java";
         File file = checkFileExist(output_path);
         //读取Solved文件内容到InputStream
-
-        try(InputStream is = new FileInputStream(new File(get_CODE_TEMPLATE_FILE_PATH()))) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = br.readLine()) != null) {
-                if(PatternUtils.containsTemplateVariable(line)){
-
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        TemplateParser.parseTemplate(new File(CODE_TEMPLATE_FILE_PATH), file,question);
     }
 
     /**
