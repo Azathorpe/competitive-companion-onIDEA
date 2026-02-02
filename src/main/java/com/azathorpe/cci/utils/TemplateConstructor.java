@@ -25,7 +25,7 @@ public class TemplateConstructor {
         if (sb.isEmpty())
             return "";
 
-        return "package " + sb.toString();
+        return "package " + sb;
     }
 
     public static String constructClassName(String line) {
