@@ -6,7 +6,7 @@ import java.util.HashMap;
  * @author Azathorpe
  * @version 1.0
  */
-public class GetCurrentEnvironmentInfoUtil {
+public class InfosUtils {
     public static HashMap<String, String> env = new HashMap<>(System.getenv());
 
     public static final String PATTERN_PACKAGE = "PACKAGE";
