@@ -23,6 +23,8 @@ public class FileSwitchListener implements FileEditorManagerListener {
             GetCurrentEnvironmentInfoUtil.modifyEnv(GetCurrentEnvironmentInfoUtil.PATTERN_FILE_PATH,event.getNewFile().getPath());
             GetCurrentEnvironmentInfoUtil.modifyEnv(GetCurrentEnvironmentInfoUtil.PATTERN_FILE_NAME,event.getNewFile().getName());
         }
+
+        GetCurrentEnvironmentInfoUtil.console();
     }
 
     @Override
