@@ -1,7 +1,7 @@
 package com.azathorpe.cci.service;
 
 import com.alibaba.fastjson2.JSON;
-import com.azathorpe.cci.actions.utils.PersistenceStorage;
+import com.azathorpe.cci.utils.PersistenceStorage;
 import com.azathorpe.cci.model.Question;
 
 import java.io.BufferedReader;
@@ -62,7 +62,9 @@ public class SocketService {
 
         System.out.println(builder);
         Question message = JSON.parseObject(builder.toString(), Question.class);
-        PersistenceStorage.saveQuestionFile(message);
+//        PersistenceStorage.saveQuestionFile(message);
+        //Switch old way to get inputStream..
+        PersistenceStorage.saveSolvedFileInTemplate(message);
         System.out.println(message);
         System.out.println(message.getTestCases());
     }

@@ -1,6 +1,7 @@
 package com.azathorpe.cci.window;
 
-import com.azathorpe.cci.actions.utils.PersistenceStorage;
+import com.azathorpe.cci.utils.InfosUtils;
+import com.azathorpe.cci.utils.PersistenceStorage;
 import com.azathorpe.cci.service.SocketService;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.DumbAware;
@@ -41,6 +42,8 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
 
         //Load settings
         PersistenceStorage.loadPropertiesFile();
+
+        InfosUtils.console();
 
         prepare();
     }
