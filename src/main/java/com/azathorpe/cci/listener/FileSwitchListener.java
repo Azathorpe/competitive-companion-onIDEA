@@ -27,8 +27,8 @@ public class FileSwitchListener implements FileEditorManagerListener {
             InfosUtils.modifyEnv(InfosUtils.PATTERN_FILE_NAME,event.getNewFile().getName());
         }
 
-        System.out.println("Paresing template for new file: " + event.getNewFile());
-        TemplateParser.parseTemplate(new File(PersistenceStorage.CODE_TEMPLATE_FILE_PATH), new File(InfosUtils.env.get(InfosUtils.PATTERN_FILE_PATH)));
+//        System.out.println("Paresing template for new file: " + event.getNewFile());
+//        TemplateParser.parseTemplate(new File(PersistenceStorage.CODE_TEMPLATE_FILE_PATH), new File(InfosUtils.env.get(InfosUtils.PATTERN_FILE_PATH)));
     }
 
     @Override

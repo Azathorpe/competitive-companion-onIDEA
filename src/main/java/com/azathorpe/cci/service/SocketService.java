@@ -64,7 +64,7 @@ public class SocketService {
         Question message = JSON.parseObject(builder.toString(), Question.class);
 //        PersistenceStorage.saveQuestionFile(message);
         //Switch old way to get inputStream..
-        PersistenceStorage.saveSolvedFileInTemplate(message.getName(), message.getGroup());
+        PersistenceStorage.saveSolvedFileInTemplate(message);
         System.out.println(message);
         System.out.println(message.getTestCases());
     }

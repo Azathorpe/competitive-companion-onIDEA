@@ -1,5 +1,6 @@
 package com.azathorpe.cci.utils;
 
+import com.azathorpe.cci.model.Question;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -17,7 +18,7 @@ public class TemplateParser {
     public static final String PROJECT_NAME_TEMPLATE = "PROJECT_NAME";
     public static final String PROJECT_PATH_TEMPLATE = "PROJECT_PATH";
 
-    public static void parseTemplate(File template, File targetPath){
+    public static void parseTemplate(File template, File targetPath, Question question){
 //        System.out.println("Parsing template: " + template.getPath() + " to target path: " + targetPath.getPath());
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
 
@@ -31,8 +32,8 @@ public class TemplateParser {
 
             //model
             Map<String, Object> root = new HashMap<>();
-            root.put(PACKAGE_NAME_TEMPLATE, TemplateConstructor.constructProjectName(InfosUtils.getEnv(FILE_PATH_TEMPLATE)));
-            root.put(CLASS_NAME_TEMPLATE, TemplateConstructor.constructClassName(InfosUtils.getEnv(FILE_NAME_TEMPLATE)));
+            root.put(PACKAGE_NAME_TEMPLATE, TemplateConstructor.constructProjectName(targetPath.toString().replace("\\","/")));
+            root.put(CLASS_NAME_TEMPLATE, TemplateConstructor.constructClassName(question.getName() + ".java"));
 //            root.put(METHOD_NAME_TEMPLATE, temp);
 //            root.put(FILE_NAME_TEMPLATE, temp);
 //            root.put(FILE_PATH_TEMPLATE, temp);

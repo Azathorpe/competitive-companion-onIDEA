@@ -2,6 +2,7 @@ package com.azathorpe.cci.model;
 
 /**
  * Many get&et methods are required for fastjson to work properly
+ *
  * @author Azathorpe
  * @version 1.0
  */
@@ -21,7 +22,14 @@ public class Question {
     }
 
     public void setName(String name) {
-        this.name = name.replaceAll(" ", "_").replace("-","").replace(".", "").replace("(","").replace(")","");
+        this.name = name.replaceAll(" ", "_")
+                .replace("-", "")
+                .replace(".", "")
+                .replace("(", "")
+                .replace(")", "")
+                .replace("[", "")
+                .replace("]", "")
+                .replace(" ", "");
     }
 
     public String getGroup() {
@@ -29,7 +37,14 @@ public class Question {
     }
 
     public void setGroup(String group) {
-        this.group = group.replace(" ", "_").replace("-","").replace(".", "").replace("(","").replace(")","");
+        this.group = group.replace(" ", "_")
+                .replace("-", "")
+                .replace(".", "")
+                .replace("(", "")
+                .replace(")", "")
+                .replace("[", "")
+                .replace("]", "")
+                .replace(" ", "");
     }
 
     public String getUrl() {
