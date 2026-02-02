@@ -1,12 +1,15 @@
 package com.azathorpe.cci.listener;
 
-import com.azathorpe.cci.utils.GetCurrentEnvironmentInfoUtil;
-import com.azathorpe.cci.utils.PatternUtils;
+import com.azathorpe.cci.utils.InfosUtils;
+import com.azathorpe.cci.utils.PersistenceStorage;
+import com.azathorpe.cci.utils.TemplateParser;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 /**
  * 当文件被切换时，我们刷新侧边栏的数据
@@ -20,11 +23,12 @@ public class FileSwitchListener implements FileEditorManagerListener {
 //        FileEditorManagerListener.super.selectionChanged(event);
 
         if (event.getNewFile() != null) {
-            GetCurrentEnvironmentInfoUtil.modifyEnv(GetCurrentEnvironmentInfoUtil.PATTERN_FILE_PATH,event.getNewFile().getPath());
-            GetCurrentEnvironmentInfoUtil.modifyEnv(GetCurrentEnvironmentInfoUtil.PATTERN_FILE_NAME,event.getNewFile().getName());
+            InfosUtils.modifyEnv(InfosUtils.PATTERN_FILE_PATH,event.getNewFile().getPath());
+            InfosUtils.modifyEnv(InfosUtils.PATTERN_FILE_NAME,event.getNewFile().getName());
         }
 
-        GetCurrentEnvironmentInfoUtil.console();
+        System.out.println("Paresing template for new file: " + event.getNewFile());
+        TemplateParser.parseTemplate(new File(PersistenceStorage.CODE_TEMPLATE_FILE_PATH), new File(InfosUtils.env.get(InfosUtils.PATTERN_FILE_PATH)));
     }
 
     @Override
