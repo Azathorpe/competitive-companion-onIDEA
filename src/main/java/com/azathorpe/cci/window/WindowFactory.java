@@ -1,6 +1,6 @@
 package com.azathorpe.cci.window;
 
-import com.azathorpe.cci.utils.GetCurrentEnvironmentInfoUtil;
+import com.azathorpe.cci.utils.InfosUtils;
 import com.azathorpe.cci.utils.PersistenceStorage;
 import com.azathorpe.cci.service.SocketService;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -43,7 +43,7 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
         //Load settings
         PersistenceStorage.loadPropertiesFile();
 
-        GetCurrentEnvironmentInfoUtil.console();
+        InfosUtils.console();
 
         prepare();
     }

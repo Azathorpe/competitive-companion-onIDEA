@@ -17,7 +17,7 @@ public class TemplateConstructor {
             if(split[index].contains(".java"))
                 break;
             sb.append(split[index]);
-            if (index <= split.length - 2) {
+            if (index < split.length - 2) {
                 sb.append(".");
             }
         }

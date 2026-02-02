@@ -42,5 +42,9 @@ public class InfosUtils {
         System.out.println("Environment variable modified: " + key + " = " + value);
     }
 
+    public static String getEnv(String key) {
+        return env.getOrDefault(key, PATTERN_NOT_DEFINED);
+    }
+
 
 }
