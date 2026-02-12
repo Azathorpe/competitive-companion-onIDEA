@@ -17,6 +17,11 @@ public class TemplateParser {
     public static final String FILE_PATH_TEMPLATE = "FILE_PATH";
     public static final String PROJECT_NAME_TEMPLATE = "PROJECT_NAME";
     public static final String PROJECT_PATH_TEMPLATE = "PROJECT_PATH";
+    public static final String URL_TEMPLATE = "URL";
+    public static final String QUESTION_NAME_TEMPLATE = "NAME";
+    public static final String QUESTION_GROUP_TEMPLATE = "GROUP";
+    public static final String QUESTION_MEMORY_LIMIT_TEMPLATE = "MEMORY_LIMIT";
+    public static final String QUESTION_TIME_LIMIT_TEMPLATE = "TIME_LIMIT";
 
     public static void parseTemplate(File template, File targetPath, Question question){
 //        System.out.println("Parsing template: " + template.getPath() + " to target path: " + targetPath.getPath());
@@ -39,6 +44,11 @@ public class TemplateParser {
 //            root.put(FILE_PATH_TEMPLATE, temp);
 //            root.put(PROJECT_NAME_TEMPLATE, temp);
 //            root.put(PROJECT_PATH_TEMPLATE, temp);
+            root.put(URL_TEMPLATE, question.getUrl());
+            root.put(QUESTION_NAME_TEMPLATE, question.getName());
+            root.put(QUESTION_GROUP_TEMPLATE, question.getGroup());
+            root.put(QUESTION_MEMORY_LIMIT_TEMPLATE, question.getMemoryLimit());
+            root.put(QUESTION_TIME_LIMIT_TEMPLATE, question.getTimeLimit());
 
             //output
             FileWriter out = new FileWriter(targetPath);
