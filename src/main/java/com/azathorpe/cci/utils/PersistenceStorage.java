@@ -151,6 +151,27 @@ public class PersistenceStorage {
     }
 
     /**
+     * 获取当前模板文件内容
+     * @return String
+     */
+    public static String getTemplateFileContent(){
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            FileReader fr = new FileReader(get_CODE_TEMPLATE_FILE_PATH());
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return sb.toString();
+    }
+
+    /**
      * 通过语言然后更改对应的模板文件
      */
     public static void changeTemplateFile(String content){
