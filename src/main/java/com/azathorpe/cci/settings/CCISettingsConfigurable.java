@@ -1,6 +1,5 @@
 package com.azathorpe.cci.settings;
 
-import com.azathorpe.cci.utils.PersistenceStorage;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.ComboBox;
@@ -11,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * 调整设置的地方
  * @author Azathorpe
  * @version 1.0
  */
@@ -23,46 +23,10 @@ public class CCISettingsConfigurable implements Configurable {
 
     @Override
     public @Nullable JComponent createComponent() {
-        JComponent panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel label = new JLabel("CCI Settings");
-        label.setVerticalTextPosition(SwingConstants.EAST);
-        label.setBorder(BorderFactory.createEmptyBorder(5,5,50,5));
-        panel.add(label);
-
-        JPanel mainPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panel.add(mainPanel);
-
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        JCheckBox checkBox = new JCheckBox("Auto fetch problem");
-        checkBox.setSelected(PersistenceStorage.settings.getAutoFetchProblems().equals("true"));
-//        mainPanel.add(checkBox);
-
-        JComboBox<String> comboBox = new ComboBox<>();
-        comboBox.addItem("Java");
-        comboBox.addItem("Python");
-        comboBox.setSelectedItem(PersistenceStorage.settings.getLanguage());
-//        mainPanel.add(comboBox);
-
-        mainPanel.add(new JPanel(){{
-            setLayout(new FlowLayout(FlowLayout.LEFT));
-            add(checkBox);
-            add(Box.createRigidArea(new Dimension(20,0)));
-            add(new JLabel("Default Language:"));
-            add(comboBox);
-        }});
-
-        comboBox.addItemListener((e) -> {
-            isModified = true;
-            PersistenceStorage.settings.setLanguage((String) comboBox.getSelectedItem());
-            //初始化一个代码模板到目标文件夹
-            String language = (String) comboBox.getSelectedItem();
-            PersistenceStorage.initCodeTemplateFile(language);
-        });
-
-        checkBox.addItemListener(e -> {
-            isModified = true;
-            PersistenceStorage.settings.setAutoFetchProblems(String.valueOf(checkBox.isSelected()));
-        });
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel label = new JLabel("This is the settings page for CCI plugin.");
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(label, BorderLayout.CENTER);
 
         return panel;
     }
@@ -74,7 +38,5 @@ public class CCISettingsConfigurable implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
-        System.out.println("Applying CCI Settings...");
-        PersistenceStorage.savePropertiesFile();
     }
 }
