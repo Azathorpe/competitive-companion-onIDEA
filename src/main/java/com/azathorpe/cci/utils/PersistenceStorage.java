@@ -74,8 +74,6 @@ public class PersistenceStorage {
 
     /**
      * Get code template file as InputStream
-     * @param questionName question name
-     * @param questionGroup question group
      * @return InputStream of code template file
      */
     public static void saveSolvedFileInTemplate(Question question) {
@@ -148,6 +146,27 @@ public class PersistenceStorage {
 
     public static String get_CODE_TEMPLATE_FILE_PATH(){
         return CODE_TEMPLATE_FILE_PATH + settings.getLanguage()+".template";
+    }
+
+    /**
+     * 获取当前模板文件内容
+     * @return String
+     */
+    public static String getTemplateFileContent(){
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            FileReader fr = new FileReader(get_CODE_TEMPLATE_FILE_PATH());
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return sb.toString();
     }
 
     /**

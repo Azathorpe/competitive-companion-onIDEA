@@ -17,12 +17,17 @@ public class TemplateParser {
     public static final String FILE_PATH_TEMPLATE = "FILE_PATH";
     public static final String PROJECT_NAME_TEMPLATE = "PROJECT_NAME";
     public static final String PROJECT_PATH_TEMPLATE = "PROJECT_PATH";
+    public static final String URL_TEMPLATE = "URL";
+    public static final String QUESTION_NAME_TEMPLATE = "NAME";
+    public static final String QUESTION_GROUP_TEMPLATE = "GROUP";
+    public static final String QUESTION_MEMORY_LIMIT_TEMPLATE = "MEMORY_LIMIT";
+    public static final String QUESTION_TIME_LIMIT_TEMPLATE = "TIME_LIMIT";
 
-    public static void parseTemplate(File template, File targetPath, Question question){
+    public static void parseTemplate(File template, File targetPath, Question question) {
 //        System.out.println("Parsing template: " + template.getPath() + " to target path: " + targetPath.getPath());
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
 
-        try{
+        try {
             cfg.setDirectoryForTemplateLoading(new File(template.getPath()));
             cfg.setDefaultEncoding("UTF-8");
 
@@ -32,18 +37,31 @@ public class TemplateParser {
 
             //model
             Map<String, Object> root = new HashMap<>();
-            root.put(PACKAGE_NAME_TEMPLATE, TemplateConstructor.constructProjectName(targetPath.toString().replace("\\","/")));
+            root.put(PACKAGE_NAME_TEMPLATE, TemplateConstructor.constructProjectName(targetPath.toString().replace("\\", "/")));
             root.put(CLASS_NAME_TEMPLATE, TemplateConstructor.constructClassName(question.getName() + ".java"));
 //            root.put(METHOD_NAME_TEMPLATE, temp);
 //            root.put(FILE_NAME_TEMPLATE, temp);
 //            root.put(FILE_PATH_TEMPLATE, temp);
 //            root.put(PROJECT_NAME_TEMPLATE, temp);
 //            root.put(PROJECT_PATH_TEMPLATE, temp);
+            root.put(URL_TEMPLATE, question.getUrl());
+            root.put(QUESTION_NAME_TEMPLATE, question.getName());
+            root.put(QUESTION_GROUP_TEMPLATE, question.getGroup());
+            root.put(QUESTION_MEMORY_LIMIT_TEMPLATE, question.getMemoryLimit());
+            root.put(QUESTION_TIME_LIMIT_TEMPLATE, question.getTimeLimit());
 
             //output
-            FileWriter out = new FileWriter(targetPath);
-            temp.process(root,out);
+            StringWriter out = new StringWriter();
+            FileWriter writer = new FileWriter(targetPath);
+            temp.process(root, out);
+            System.out.println(out);
+
+            writer.write(out.toString());
+            writer.flush();
+
+            //释放资源
             out.close();
+            writer.close();
 
 
         } catch (IOException | TemplateException e) {
