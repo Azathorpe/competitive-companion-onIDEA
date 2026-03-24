@@ -65,6 +65,7 @@ public class SocketService {
 //        PersistenceStorage.saveQuestionFile(message);
         //Switch old way to get inputStream..
         PersistenceStorage.saveSolvedFileInTemplate(message);
+        PersistenceStorage.saveQuestionFile(message);
         System.out.println(message);
         System.out.println(message.getTestCases());
     }

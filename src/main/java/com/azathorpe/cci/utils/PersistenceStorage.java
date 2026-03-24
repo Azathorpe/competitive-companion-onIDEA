@@ -74,8 +74,6 @@ public class PersistenceStorage {
 
     /**
      * Get code template file as InputStream
-     * @param questionName question name
-     * @param questionGroup question group
      * @return InputStream of code template file
      */
     public static void saveSolvedFileInTemplate(Question question) {
