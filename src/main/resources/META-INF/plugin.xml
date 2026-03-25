@@ -54,6 +54,11 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 
+        <action id="cci.editor.GetSubmitFile" class="com.azathorpe.cci.actions.editor.GetSubmitFile"
+                text="Get Submit File" description="Get submit file of current problem">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+
 <!--        <group id="cci.editor.menu" class="com.azathorpe.cci.actions.editor.EditorMenuActionGroup" text="CCI Editor Menu"-->
 <!--               popup="true" description="Description of the action">-->
 <!--&lt;!&ndash;            <REF id="cci.editor.group"/>&ndash;&gt;-->
