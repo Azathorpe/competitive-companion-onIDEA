@@ -3,6 +3,7 @@ package com.azathorpe.cci.utils;
 import com.azathorpe.cci.impls.Impls;
 import com.azathorpe.cci.impls.JavaImpl;
 import com.azathorpe.cci.model.Question;
+import com.azathorpe.cci.model.Settings;
 
 /**
  * 持久化存储

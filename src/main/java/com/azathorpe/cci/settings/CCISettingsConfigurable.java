@@ -1,5 +1,8 @@
 package com.azathorpe.cci.settings;
 
+import com.azathorpe.cci.model.Settings;
+import com.azathorpe.cci.utils.Infos;
+import com.azathorpe.cci.utils.PersistentStorage;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.ComboBox;
@@ -23,10 +26,32 @@ public class CCISettingsConfigurable implements Configurable {
 
     @Override
     public @Nullable JComponent createComponent() {
+        //创建一个简单的设置界面，它包含一个下拉框，用户可以选择是否自动监听端口
         JPanel panel = new JPanel(new BorderLayout());
-        JLabel label = new JLabel("This is the settings page for CCI plugin.");
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(label, BorderLayout.CENTER);
+        JLabel label = new JLabel("Auto Listen Port:");
+        ComboBox<String> comboBox = new ComboBox<>(new String[]{"Enable", "Disable"});
+        comboBox.setSelectedIndex(Infos.settings.getAutoFetchProblems().equals("true") ? 0 : 1);
+        comboBox.addActionListener(e -> {
+            boolean autoListenPort = comboBox.getSelectedIndex() == 0;
+            Infos.settings.setAutoFetchProblems(autoListenPort ? "true" : "false");
+            isModified = true;
+        });
+        panel.add(label, BorderLayout.WEST);
+        panel.add(comboBox, BorderLayout.CENTER);
+
+        //再添加一个下拉框，用户可以选择默认的编程语言
+        JLabel labelLanguage = new JLabel("Default Language:");
+        ComboBox<String> comboBoxLanguage = new ComboBox<>(new String[]{"Java", "Python", "C++"});
+        comboBoxLanguage.setSelectedIndex(Infos.settings.getLanguage().equals("Java") ? 0 : Infos.settings.getLanguage().equals("Python") ? 1 : 2);
+        comboBoxLanguage.addActionListener(e -> {
+            String language = comboBoxLanguage.getSelectedItem().toString();
+            Infos.settings.setLanguage(language);
+            isModified = true;
+        });
+        JPanel languagePanel = new JPanel(new BorderLayout());
+        languagePanel.add(labelLanguage, BorderLayout.WEST);
+        languagePanel.add(comboBoxLanguage, BorderLayout.CENTER);
+        panel.add(languagePanel, BorderLayout.SOUTH);
 
         return panel;
     }
@@ -38,5 +63,9 @@ public class CCISettingsConfigurable implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
+        //在用户点击应用按钮时，我们将设置保存到磁盘
+        Infos.saveSettings(Infos.settings);
+        Infos.updateSettings();
+        isModified = false;
     }
 }
