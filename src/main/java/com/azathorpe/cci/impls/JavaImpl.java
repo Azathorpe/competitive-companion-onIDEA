@@ -21,7 +21,6 @@ public class JavaImpl implements Impls {
         File file = new File(targetFolder);
         if (!file.exists())
             file.mkdirs();
-        //TODO: 模板文件直接移动过来
 
         Template.copyTemplate(targetFolder + "/" + fileName, question);
         Debugger.log("Problem saved to: ", file.getAbsolutePath());
