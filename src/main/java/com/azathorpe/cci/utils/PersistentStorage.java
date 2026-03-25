@@ -1,5 +1,7 @@
 package com.azathorpe.cci.utils;
 
+import com.azathorpe.cci.impls.Impls;
+import com.azathorpe.cci.impls.JavaImpl;
 import com.azathorpe.cci.model.Question;
 
 /**
@@ -24,19 +26,27 @@ public class PersistentStorage {
      */
     static String solvedPath = "/.cci_question/solved/";
 
+    public static Impls saveImpls = null;
+
     /**
      * 新建一个题目文件，内容为题目的基本信息（题目名称、题目链接、时间限制、内存限制等）
      */
     public static void createProblemFile(Question question) {
         //清除当前文件的内容，写入题目的基本信息
-        System.out.println(basePath);
+        if(saveImpls == null){
+            throw new RuntimeException("Save implementation is not defined, please call WindowFactory.projectNeeded(project) first");
+        }
+        saveImpls.saveProblem(question,basePath);
     }
 
     /**
      * 新建一个测试数据文件，内容为题目的测试数据
      */
     public static void createTestDataFile(Question question) {
-
+        if (saveImpls == null){
+            throw new RuntimeException("Save implementation is not defined, please call WindowFactory.projectNeeded(project) first");
+        }
+        saveImpls.saveTests(question,basePath);
     }
 
     public static String getSettingsPath() {
@@ -59,5 +69,10 @@ public class PersistentStorage {
 
     public static void setBasePath(String basePath) {
         PersistentStorage.basePath = basePath;
+    }
+
+    static {
+        //TODO: 从配置文件中读取使用的代码(用的环境 Pycharm or IDEA)，并且根据环境设置不同的Impls 暂时先默认使用JavaImpl
+        saveImpls = new JavaImpl();
     }
 }
