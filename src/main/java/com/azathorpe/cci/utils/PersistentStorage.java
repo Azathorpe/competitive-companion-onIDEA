@@ -26,6 +26,9 @@ public class PersistentStorage {
      */
     static String solvedPath = "/.cci_question/solved/";
 
+    /**
+     * 保存题目信息和测试数据的实现类，根据不同的编程语言来实现这个接口
+     */
     public static Impls saveImpls = null;
 
     /**
