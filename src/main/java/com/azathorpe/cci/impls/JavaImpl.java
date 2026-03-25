@@ -1,6 +1,8 @@
 package com.azathorpe.cci.impls;
 
 import com.azathorpe.cci.model.Question;
+import com.azathorpe.cci.utils.Debugger;
+import com.azathorpe.cci.utils.Template;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -21,14 +23,8 @@ public class JavaImpl implements Impls {
             file.mkdirs();
         //TODO: 模板文件直接移动过来
 
-        file = new File(targetFolder + "/" + fileName);
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write("Hi");
-            fileWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Template.copyTemplate(targetFolder + "/" + fileName, question);
+        Debugger.log("Problem saved to: ", file.getAbsolutePath());
 
     }
 
