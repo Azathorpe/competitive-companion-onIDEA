@@ -16,7 +16,7 @@ import java.io.IOException;
 public class JavaImpl implements Impls {
 
     @Override
-    public void saveProblem(Question question,String path) {
+    public String saveProblem(Question question,String path) {
         String targetFolder = path + "/src/" + question.getGroup(),fileName = question.getName() + ".java";
         File file = new File(targetFolder);
         if (!file.exists())
@@ -26,10 +26,11 @@ public class JavaImpl implements Impls {
         Template.copyTemplate(targetFolder + "/" + fileName, question);
         Debugger.log("Problem saved to: ", file.getAbsolutePath());
 
+        return targetFolder + "/" + fileName;
     }
 
     @Override
-    public void saveTests(Question question,String path) {
+    public String saveTests(Question question,String path) {
         String targetFolder = path + "/.cci_questions/" + question.getGroup(),fileName = question.getName() + ".json";
         File file = new File(targetFolder);
         if (!file.exists())
@@ -42,5 +43,7 @@ public class JavaImpl implements Impls {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        return targetFolder + "/" + fileName;
     }
 }

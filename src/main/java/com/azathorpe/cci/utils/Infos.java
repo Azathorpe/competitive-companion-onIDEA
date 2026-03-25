@@ -2,11 +2,16 @@ package com.azathorpe.cci.utils;
 
 import com.alibaba.fastjson2.JSON;
 import com.azathorpe.cci.model.Settings;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.wm.WindowManager;
 
 import java.io.*;
 
 /**
  * 存放用户配置信息的类，包含用户的编程语言、代码模板等信息
+ * 1.1:添加了获取Project
+ * @version 1.1
  */
 public class Infos {
     public static final String userConfigPath = System.getProperty("user.home") + "/.cci/properties.json";
@@ -52,6 +57,14 @@ public class Infos {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 向上帝祈祷不会出错吧 ...
+     * @return ...
+     */
+    public static Project getProject() {
+        return ProjectManager.getInstance().getOpenProjects()[0];
     }
 
     static {

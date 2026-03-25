@@ -35,22 +35,22 @@ public class PersistentStorage {
     /**
      * 新建一个题目文件，内容为题目的基本信息（题目名称、题目链接、时间限制、内存限制等）
      */
-    public static void createProblemFile(Question question) {
+    public static String createProblemFile(Question question) {
         //清除当前文件的内容，写入题目的基本信息
         if(saveImpls == null){
             throw new RuntimeException("Save implementation is not defined, please call WindowFactory.projectNeeded(project) first");
         }
-        saveImpls.saveProblem(question,basePath);
+        return saveImpls.saveProblem(question, basePath);
     }
 
     /**
      * 新建一个测试数据文件，内容为题目的测试数据
      */
-    public static void createTestDataFile(Question question) {
+    public static String createTestDataFile(Question question) {
         if (saveImpls == null){
             throw new RuntimeException("Save implementation is not defined, please call WindowFactory.projectNeeded(project) first");
         }
-        saveImpls.saveTests(question,basePath);
+        return saveImpls.saveTests(question,basePath);
     }
 
     public static String getSettingsPath() {

@@ -3,13 +3,22 @@ package com.azathorpe.cci.service;
 import com.alibaba.fastjson2.JSON;
 import com.azathorpe.cci.model.Question;
 import com.azathorpe.cci.utils.Debugger;
+import com.azathorpe.cci.utils.Infos;
 import com.azathorpe.cci.utils.PersistentStorage;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.ui.MessageDialogBuilder;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 /**
  * @author Azathorpe
@@ -30,9 +39,24 @@ public class SocketService {
         //把buffer传给JsonParser解析，得到题目信息
         Question question = JSON.parseObject(buffer, Question.class);
         //把题目信息传给ProblemCreator创建题目
-        PersistentStorage.createProblemFile(question);
+        String problemFile = PersistentStorage.createProblemFile(question);
         //把题目信息传给TestCaseCreator创建测试用例
-        PersistentStorage.createTestDataFile(question);
+        String testDataFile = PersistentStorage.createTestDataFile(question);
+
+        LocalFileSystem.getInstance().refresh(false);
+        VirtualFile vif = LocalFileSystem.getInstance().findFileByPath(problemFile);
+
+        ApplicationManager.getApplication().invokeLater(() -> {
+            boolean ok = MessageDialogBuilder.yesNo("New Problem Received",
+                            "A new problem has been received from Competitive Companion. Do you want to open it?")
+                    .ask(Infos.getProject());
+
+            if(ok && vif != null)
+                FileEditorManager.getInstance(Infos.getProject()).openFile(vif, true);
+
+        });
+
+
     }
 
 

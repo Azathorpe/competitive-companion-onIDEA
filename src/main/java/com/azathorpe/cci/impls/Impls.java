@@ -14,14 +14,14 @@ public interface Impls {
      * @param question
      * @param path
      */
-    void saveProblem(Question question,String path);
+    String saveProblem(Question question,String path);
 
     /**
      * 保存测试数据到文件中，具体的实现类需要根据不同的编程语言来实现这个方法
      * @param question
      * @param path
      */
-    void saveTests(Question question,String path);
+    String saveTests(Question question,String path);
 
 
 }
