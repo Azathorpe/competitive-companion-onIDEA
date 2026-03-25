@@ -29,12 +29,13 @@ public class PersistentStorage {
      */
     public static void createProblemFile(Question question) {
         //清除当前文件的内容，写入题目的基本信息
+        System.out.println(basePath);
     }
 
     /**
      * 新建一个测试数据文件，内容为题目的测试数据
      */
-    public static void createTestDataFile(){
+    public static void createTestDataFile(Question question) {
 
     }
 

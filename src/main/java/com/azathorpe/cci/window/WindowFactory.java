@@ -22,10 +22,10 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        projectNeeded(project);
+        initialization(project);
     }
 
-    public static void projectNeeded(Project project) {
+    public static void initialization(Project project) {
         PersistentStorage.setBasePath(project.getBasePath());
     }
 

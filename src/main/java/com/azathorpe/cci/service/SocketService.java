@@ -30,6 +30,9 @@ public class SocketService {
         //把buffer传给JsonParser解析，得到题目信息
         Question question = JSON.parseObject(buffer, Question.class);
         //把题目信息传给ProblemCreator创建题目
+        PersistentStorage.createProblemFile(question);
+        //把题目信息传给TestCaseCreator创建测试用例
+        PersistentStorage.createTestDataFile(question);
     }
 
 
