@@ -1,6 +1,8 @@
 package com.azathorpe.cci.settings;
 
-import com.azathorpe.cci.utils.PersistenceStorage;
+import com.azathorpe.cci.model.Settings;
+import com.azathorpe.cci.utils.Infos;
+import com.azathorpe.cci.utils.PersistentStorage;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.ComboBox;
@@ -11,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * 调整设置的地方
  * @author Azathorpe
  * @version 1.0
  */
@@ -23,46 +26,35 @@ public class CCISettingsConfigurable implements Configurable {
 
     @Override
     public @Nullable JComponent createComponent() {
-        JComponent panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel label = new JLabel("CCI Settings");
-        label.setVerticalTextPosition(SwingConstants.EAST);
-        label.setBorder(BorderFactory.createEmptyBorder(5,5,50,5));
-        panel.add(label);
+        //创建一个简单的设置界面，它包含一个下拉框，用户可以选择是否自动监听端口
+        JPanel panel = new JPanel(new GridLayout(2,1));
 
-        JPanel mainPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panel.add(mainPanel);
-
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        JCheckBox checkBox = new JCheckBox("Auto fetch problem");
-        checkBox.setSelected(PersistenceStorage.settings.getAutoFetchProblems().equals("true"));
-//        mainPanel.add(checkBox);
-
-        JComboBox<String> comboBox = new ComboBox<>();
-        comboBox.addItem("Java");
-        comboBox.addItem("Python");
-        comboBox.setSelectedItem(PersistenceStorage.settings.getLanguage());
-//        mainPanel.add(comboBox);
-
-        mainPanel.add(new JPanel(){{
-            setLayout(new FlowLayout(FlowLayout.LEFT));
-            add(checkBox);
-            add(Box.createRigidArea(new Dimension(20,0)));
-            add(new JLabel("Default Language:"));
-            add(comboBox);
-        }});
-
-        comboBox.addItemListener((e) -> {
+        JPanel autoListenPanel = new JPanel(new BorderLayout());
+        JLabel label = new JLabel("Auto Listen Port:");
+        ComboBox<String> comboBox = new ComboBox<>(new String[]{"Enable", "Disable"});
+        comboBox.setSelectedIndex(Infos.settings.getAutoFetchProblems().equals("true") ? 0 : 1);
+        comboBox.addActionListener(e -> {
+            boolean autoListenPort = comboBox.getSelectedIndex() == 0;
+            Infos.settings.setAutoFetchProblems(autoListenPort ? "true" : "false");
             isModified = true;
-            PersistenceStorage.settings.setLanguage((String) comboBox.getSelectedItem());
-            //初始化一个代码模板到目标文件夹
-            String language = (String) comboBox.getSelectedItem();
-            PersistenceStorage.initCodeTemplateFile(language);
         });
+        autoListenPanel.add(label, BorderLayout.WEST);
+        autoListenPanel.add(comboBox, BorderLayout.CENTER);
+        panel.add(autoListenPanel);
 
-        checkBox.addItemListener(e -> {
+        //再添加一个下拉框，用户可以选择默认的编程语言
+        JLabel labelLanguage = new JLabel("Default Language:");
+        ComboBox<String> comboBoxLanguage = new ComboBox<>(new String[]{"Java", "Python", "C++"});
+        comboBoxLanguage.setSelectedIndex(Infos.settings.getLanguage().equals("Java") ? 0 : Infos.settings.getLanguage().equals("Python") ? 1 : 2);
+        comboBoxLanguage.addActionListener(e -> {
+            String language = comboBoxLanguage.getSelectedItem().toString();
+            Infos.settings.setLanguage(language);
             isModified = true;
-            PersistenceStorage.settings.setAutoFetchProblems(String.valueOf(checkBox.isSelected()));
         });
+        JPanel languagePanel = new JPanel(new BorderLayout());
+        languagePanel.add(labelLanguage, BorderLayout.WEST);
+        languagePanel.add(comboBoxLanguage, BorderLayout.CENTER);
+        panel.add(languagePanel);
 
         //TODO: Add a button to open a new window to edit the code template
         JButton changeTemplateButton = new JButton("Change Code Template");
@@ -89,8 +81,10 @@ public class CCISettingsConfigurable implements Configurable {
     }
 
     @Override
-    public void apply() throws ConfigurationException {
-        System.out.println("Applying CCI Settings...");
-        PersistenceStorage.savePropertiesFile();
+    public void apply() {
+        //在用户点击应用按钮时，我们将设置保存到磁盘
+        Infos.saveSettings(Infos.settings);
+        Infos.updateSettings();
+        isModified = false;
     }
 }

@@ -37,6 +37,7 @@
 
         <toolWindow factoryClass="com.azathorpe.cci.window.WindowFactory" id="cci" anchor="left" secondary="true"
                     icon="com.azathorpe.cci.icons.CCIIcons.CCI_ICON"/>
+<!--        <applicationService serviceImplementation="com.azathorpe.cci.service.MyPluginInitService"/>-->
     </extensions>
 
     <applicationListeners>
@@ -51,6 +52,11 @@
 
         <action id="cci.utils.switchListenPortAction" class="com.azathorpe.cci.actions.editor.SwitchListenPortAction"
                 text="Switch Port Listener Func">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="cci.editor.GetSubmitFile" class="com.azathorpe.cci.actions.editor.GetSubmitFile"
+                text="Get Submit File" description="Get submit file of current problem">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 

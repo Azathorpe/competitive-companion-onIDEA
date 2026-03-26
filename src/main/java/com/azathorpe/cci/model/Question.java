@@ -1,11 +1,5 @@
 package com.azathorpe.cci.model;
 
-import com.azathorpe.cci.utils.anno.RememberDELIT;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
 /**
  * Many get&et methods are required for fastjson to work properly
  *
@@ -23,28 +17,20 @@ public class Question {
     TestCase[] tests;
     String testType;
 
-    private static final HashSet<Character> invalidChars = new HashSet<>();
-
-    static{
-        for(char c : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_".toCharArray())
-            invalidChars.add(c);
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        StringBuilder sb = new StringBuilder();
-
-        for(char c : name.toCharArray()){
-            if(invalidChars.contains(c))
-                sb.append(c);
-            else
-                sb.append("_");
-        }
-
-        this.name = sb.toString();
+        this.name = name.replaceAll(" ", "_")
+                .replace("-", "")
+                .replace(".", "")
+                .replace("(", "")
+                .replace(")", "")
+                .replace("[", "")
+                .replace("]", "")
+                .replace(" ", "")
+                .replace("+", "");
     }
 
     public String getGroup() {
@@ -52,16 +38,15 @@ public class Question {
     }
 
     public void setGroup(String group) {
-        StringBuilder sb = new StringBuilder();
-
-        for(char c : group.toCharArray()){
-            if(invalidChars.contains(c))
-                sb.append(c);
-            else
-                sb.append("_");
-        }
-
-        this.group = sb.toString();
+        this.group = group.replace(" ", "_")
+                .replace("-", "")
+                .replace(".", "")
+                .replace("(", "")
+                .replace(")", "")
+                .replace("[", "")
+                .replace("]", "")
+                .replace(" ", "")
+                .replace("+", "");
     }
 
     public String getUrl() {
@@ -124,7 +109,6 @@ public class Question {
         return builder.toString();
     }
 
-    @RememberDELIT
     @Override
     public String toString() {
         return "OIMessage{" +
@@ -159,7 +143,6 @@ public class Question {
             this.output = output;
         }
 
-        @RememberDELIT
         @Override
         public String toString() {
             return "TestCase{" +

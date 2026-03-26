@@ -1,15 +1,16 @@
 package com.azathorpe.cci.listener;
 
-import com.azathorpe.cci.utils.InfosUtils;
-import com.azathorpe.cci.utils.PersistenceStorage;
-import com.azathorpe.cci.utils.TemplateParser;
+import com.azathorpe.cci.utils.FilesUtils;
+import com.azathorpe.cci.window.WindowFactory;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.ui.content.ContentManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
+import javax.swing.*;
 
 /**
  * 当文件被切换时，我们刷新侧边栏的数据
@@ -18,17 +19,19 @@ import java.io.File;
  */
 public class FileSwitchListener implements FileEditorManagerListener {
 
+    private static final Logger LOGGER = Logger.getInstance(FileSwitchListener.class);
+
     @Override
     public void selectionChanged(@NotNull FileEditorManagerEvent event) {
-//        FileEditorManagerListener.super.selectionChanged(event);
-
-        if (event.getNewFile() != null) {
-            InfosUtils.modifyEnv(InfosUtils.PATTERN_FILE_PATH,event.getNewFile().getPath());
-            InfosUtils.modifyEnv(InfosUtils.PATTERN_FILE_NAME,event.getNewFile().getName());
-        }
-
-//        System.out.println("Paresing template for new file: " + event.getNewFile());
-//        TemplateParser.parseTemplate(new File(PersistenceStorage.CODE_TEMPLATE_FILE_PATH), new File(InfosUtils.env.get(InfosUtils.PATTERN_FILE_PATH)));
+        SwingUtilities.invokeLater(() -> {
+            if (event.getNewFile() != null) {
+                WindowFactory.flashToolWindow(event.getNewFile().getPath());
+                System.out.println("File switched to: " + event.getNewFile().getPath());
+            }else{
+                LOGGER.info("No file is currently selected.");
+                //是Null 我就不处理了
+            }
+        });
     }
 
     @Override
