@@ -37,6 +37,7 @@
 
         <toolWindow factoryClass="com.azathorpe.cci.window.WindowFactory" id="cci" anchor="left" secondary="true"
                     icon="com.azathorpe.cci.icons.CCIIcons.CCI_ICON"/>
+<!--        <applicationService serviceImplementation="com.azathorpe.cci.service.MyPluginInitService"/>-->
     </extensions>
 
     <applicationListeners>

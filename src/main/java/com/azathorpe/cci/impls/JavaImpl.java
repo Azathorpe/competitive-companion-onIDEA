@@ -1,5 +1,6 @@
 package com.azathorpe.cci.impls;
 
+import com.alibaba.fastjson2.JSON;
 import com.azathorpe.cci.model.Question;
 import com.azathorpe.cci.utils.Debugger;
 import com.azathorpe.cci.utils.Template;
@@ -37,7 +38,7 @@ public class JavaImpl implements Impls {
         file = new File(targetFolder + "/" + fileName);
         try {
             FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(question.getTestCases());
+            fileWriter.write(JSON.toJSONString(question));
             fileWriter.close();
         } catch (IOException e) {
             throw new RuntimeException(e);

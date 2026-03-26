@@ -72,6 +72,7 @@ public class Infos {
         //读取用户的配置信息，如果没有找到配置文件或者配置文件中没有语言信息，则使用默认的语言（Java）
         Infos.updateSettings();
 
+        //TODO: 可能存在的BUG 开始的时候用户没有配置文件，导致Infos.settings为null，调用getAutoFetchProblems方法会抛出NullPointerException
         if (Infos.settings.getAutoFetchProblems().equals("true")) {
             SocketService.startServer();
         } else {
