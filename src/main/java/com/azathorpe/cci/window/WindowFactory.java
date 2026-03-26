@@ -7,6 +7,7 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.content.ContentManager;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 
 /**
  * 调整单独的Panel的地方
@@ -31,6 +33,8 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
     // Single title label we update on each file switch
     private static final JLabel titleLabel = new JLabel();
     private static final JLabel questionLabel = new JLabel();
+    // Single scroll pane we reuse for test cases
+    private static final JBScrollPane questionScrollPane = new JBScrollPane(questionPanel);
     // track whether content has been added to the tool window
     private static boolean initialized = false;
 
@@ -57,6 +61,7 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
             // setup layout and add panels
             mainPanel.add(titlePanel, BorderLayout.NORTH);
             mainPanel.add(questionPanel, BorderLayout.CENTER);
+            //TODO: settingsPanel的内容还没有设计好，先放在这里，等设计好了再添加进去
             mainPanel.add(settingsPanel, BorderLayout.SOUTH);
 
             // configure title label once
@@ -84,11 +89,40 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
             System.out.println("No question data found for file: " + currentFilePath);
         }
 
+        questionPanel.add(questionScrollPane);
+
+        //添加所有的测试样例信息
+        if (currentQuestionData != null && currentQuestionData.getTestCases() != null) {
+            JPanel testCasesPanel = new JPanel(new GridLayout(currentQuestionData.getTests().length,2));
+            for (int i = 0; i < currentQuestionData.getTests().length; i++) {
+                StringBuilder testCasesInfo = new StringBuilder("<html><body style='width: 300px;'>");
+                testCasesInfo.append("Test Case ").append(i + 1).append(":<br>");
+                testCasesInfo.append("Input: ").append(currentQuestionData.getTests()[i].getInput()).append("<br>");
+                testCasesInfo.append("Expected Output: ").append(currentQuestionData.getTests()[i].getOutput()).append("<br><br>");
+                testCasesInfo.append("</body></html>");
+                JLabel testCasesLabel = new JLabel(testCasesInfo.toString());
+                JButton testCaseButton = new JButton("Copy Test Case " + (i + 1));
+                int finalI = i;
+                testCaseButton.addActionListener(e -> {
+                    String clipboardContent = currentQuestionData.getTests()[finalI].getInput();
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(clipboardContent), null);
+                });
+                testCasesPanel.add(testCasesLabel);
+                testCasesPanel.add(testCaseButton);
+            }
+            questionScrollPane.setViewportView(testCasesPanel);
+        } else {
+            JLabel noTestCasesLabel = new JLabel("No test cases available for this question.");
+            questionScrollPane.setViewportView(noTestCasesLabel);
+        }
+
         // Refresh UI
         titlePanel.revalidate();
         titlePanel.repaint();
         mainPanel.revalidate();
         mainPanel.repaint();
+        questionPanel.revalidate();
+        questionPanel.repaint();
     }
 
     public static ToolWindow getToolWindow() {

@@ -29,7 +29,8 @@ public class Question {
                 .replace(")", "")
                 .replace("[", "")
                 .replace("]", "")
-                .replace(" ", "");
+                .replace(" ", "")
+                .replace("+", "");
     }
 
     public String getGroup() {
@@ -44,7 +45,8 @@ public class Question {
                 .replace(")", "")
                 .replace("[", "")
                 .replace("]", "")
-                .replace(" ", "");
+                .replace(" ", "")
+                .replace("+", "");
     }
 
     public String getUrl() {
