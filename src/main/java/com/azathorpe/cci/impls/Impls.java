@@ -23,5 +23,7 @@ public interface Impls {
      */
     String saveTests(Question question,String path);
 
+    String getQuestionDatas(String currentFilePath);
+
 
 }

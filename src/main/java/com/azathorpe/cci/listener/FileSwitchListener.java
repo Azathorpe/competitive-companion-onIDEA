@@ -1,10 +1,16 @@
 package com.azathorpe.cci.listener;
 
+import com.azathorpe.cci.utils.FilesUtils;
+import com.azathorpe.cci.window.WindowFactory;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.ui.content.ContentManager;
 import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
 
 /**
  * 当文件被切换时，我们刷新侧边栏的数据
@@ -13,9 +19,19 @@ import org.jetbrains.annotations.NotNull;
  */
 public class FileSwitchListener implements FileEditorManagerListener {
 
+    private static final Logger LOGGER = Logger.getInstance(FileSwitchListener.class);
+
     @Override
     public void selectionChanged(@NotNull FileEditorManagerEvent event) {
-
+        SwingUtilities.invokeLater(() -> {
+            if (event.getNewFile() != null) {
+                WindowFactory.flashToolWindow(event.getNewFile().getPath());
+                System.out.println("File switched to: " + event.getNewFile().getPath());
+            }else{
+                LOGGER.info("No file is currently selected.");
+                //是Null 我就不处理了
+            }
+        });
     }
 
     @Override

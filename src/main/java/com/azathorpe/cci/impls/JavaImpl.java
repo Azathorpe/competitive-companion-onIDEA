@@ -46,4 +46,9 @@ public class JavaImpl implements Impls {
 
         return targetFolder + "/" + fileName;
     }
+
+    @Override
+    public String getQuestionDatas(String currentFilePath) {
+        return currentFilePath.replace("src", ".cci_questions").replace(".java", ".json");
+    }
 }
