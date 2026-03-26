@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.azathorpe"
-version = "1.1-SNAPSHOT"
+version = "1.1.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -49,6 +49,35 @@ tasks {
         sourceCompatibility = "21"
         targetCompatibility = "21"
     }
+
+    // Build a single fat JAR that contains all runtime dependencies and the plugin resources
+    // Keep META-INF/plugin.xml (don't exclude the whole META-INF folder) but exclude signature files
+    jar {
+        // Name like: <project-name>-plugin-<version>.jar
+        archiveBaseName.set("${project.name}-plugin")
+        archiveVersion.set(project.version.toString())
+
+        // include compiled classes and resources
+        from(sourceSets.main.get().output)
+
+        // unpack runtime classpath jars into the jar (produce fat jar)
+        dependsOn(configurations.runtimeClasspath)
+        from({
+            configurations.runtimeClasspath.get().filter { it.name.endsWith(".jar") }.map { zipTree(it) }
+        })
+
+        manifest {
+            attributes(
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to project.version
+            )
+        }
+
+        // Exclude only signature files to avoid conflicts; keep META-INF/plugin.xml and other resources
+        exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+
 }
 
 kotlin {

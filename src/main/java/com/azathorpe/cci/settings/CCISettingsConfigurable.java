@@ -27,7 +27,9 @@ public class CCISettingsConfigurable implements Configurable {
     @Override
     public @Nullable JComponent createComponent() {
         //创建一个简单的设置界面，它包含一个下拉框，用户可以选择是否自动监听端口
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new GridLayout(2,1));
+
+        JPanel autoListenPanel = new JPanel(new BorderLayout());
         JLabel label = new JLabel("Auto Listen Port:");
         ComboBox<String> comboBox = new ComboBox<>(new String[]{"Enable", "Disable"});
         comboBox.setSelectedIndex(Infos.settings.getAutoFetchProblems().equals("true") ? 0 : 1);
@@ -36,8 +38,9 @@ public class CCISettingsConfigurable implements Configurable {
             Infos.settings.setAutoFetchProblems(autoListenPort ? "true" : "false");
             isModified = true;
         });
-        panel.add(label, BorderLayout.WEST);
-        panel.add(comboBox, BorderLayout.CENTER);
+        autoListenPanel.add(label, BorderLayout.WEST);
+        autoListenPanel.add(comboBox, BorderLayout.CENTER);
+        panel.add(autoListenPanel);
 
         //再添加一个下拉框，用户可以选择默认的编程语言
         JLabel labelLanguage = new JLabel("Default Language:");
@@ -51,7 +54,7 @@ public class CCISettingsConfigurable implements Configurable {
         JPanel languagePanel = new JPanel(new BorderLayout());
         languagePanel.add(labelLanguage, BorderLayout.WEST);
         languagePanel.add(comboBoxLanguage, BorderLayout.CENTER);
-        panel.add(languagePanel, BorderLayout.SOUTH);
+        panel.add(languagePanel);
 
         return panel;
     }
@@ -62,7 +65,7 @@ public class CCISettingsConfigurable implements Configurable {
     }
 
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
         //在用户点击应用按钮时，我们将设置保存到磁盘
         Infos.saveSettings(Infos.settings);
         Infos.updateSettings();

@@ -4,6 +4,7 @@ import com.azathorpe.cci.impls.Impls;
 import com.azathorpe.cci.impls.JavaImpl;
 import com.azathorpe.cci.model.Question;
 import com.azathorpe.cci.model.Settings;
+import com.intellij.openapi.diagnostic.Logger;
 
 /**
  * 持久化存储
@@ -31,6 +32,8 @@ public class PersistentStorage {
      * 保存题目信息和测试数据的实现类，根据不同的编程语言来实现这个接口
      */
     public static Impls saveImpls = null;
+
+    private static final Logger LOGGER = Logger.getInstance(PersistentStorage.class);
 
     /**
      * 新建一个题目文件，内容为题目的基本信息（题目名称、题目链接、时间限制、内存限制等）

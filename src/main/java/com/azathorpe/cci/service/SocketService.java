@@ -6,6 +6,7 @@ import com.azathorpe.cci.utils.Debugger;
 import com.azathorpe.cci.utils.Infos;
 import com.azathorpe.cci.utils.PersistentStorage;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.MessageDialogBuilder;
@@ -28,6 +29,8 @@ public class SocketService {
     private static final int port = 10043;
 
     private static boolean isRunning = false;
+
+    private static final Logger LOGGER = Logger.getInstance(SocketService.class);
 
     /**
      * 实际使用这些数据的函数，单独抽出来是为了方便测试
@@ -64,6 +67,10 @@ public class SocketService {
      * 开始服务
      */
     public static void startServer() {
+        LOGGER.info("Starting SocketService");
+        LOGGER.info("Listening on port: " + port);
+        LOGGER.info(String.valueOf(Infos.settings));
+
         if (!isRunning) {
             isRunning = true;
             Thread thread = new Thread(() -> {
