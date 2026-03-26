@@ -2,6 +2,7 @@ package com.azathorpe.cci.utils;
 
 import com.alibaba.fastjson2.JSON;
 import com.azathorpe.cci.model.Settings;
+import com.azathorpe.cci.service.SocketService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.wm.WindowManager;
@@ -69,24 +70,12 @@ public class Infos {
 
     static {
         //读取用户的配置信息，如果没有找到配置文件或者配置文件中没有语言信息，则使用默认的语言（Java）
-        StringBuilder sb = new StringBuilder();
-        try {
-            FileReader fr = new FileReader(userConfigPath);
-            BufferedReader br = new BufferedReader(fr);
+        Infos.updateSettings();
 
-            String line;
-            while((line = br.readLine()) != null)
-                sb.append(line);
-
-            br.close();
-            fr.close();
-
-        }catch(FileNotFoundException e) {
-            throw new RuntimeException("User config file not found, please create a properties.json file in " + userConfigPath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (Infos.settings.getAutoFetchProblems().equals("true")) {
+            SocketService.startServer();
+        } else {
+            SocketService.stopServer();
         }
-
-        settings = JSON.parseObject(sb.toString(), Settings.class);
     }
 }

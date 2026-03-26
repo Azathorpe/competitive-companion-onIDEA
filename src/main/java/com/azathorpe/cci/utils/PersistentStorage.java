@@ -16,7 +16,7 @@ public class PersistentStorage {
      */
     static String settingsPath = System.getProperty("user.home") + "/.cci/";
 
-    static String basePath = "NOT_DEFINED";
+    static String basePath = Infos.getProject().getBasePath();
 
     /**
      * 测试用例的位置
