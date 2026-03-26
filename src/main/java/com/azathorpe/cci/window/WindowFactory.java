@@ -23,10 +23,16 @@ import java.awt.*;
  */
 public class WindowFactory implements ToolWindowFactory, DumbAware {
     private static final JPanel mainPanel = new JPanel(new BorderLayout());
-    private static final JPanel titlePanel = new JPanel();
+    private static final JPanel titlePanel = new JPanel(new GridLayout(2,1));
     private static final JPanel questionPanel = new JPanel();
     private static final JPanel settingsPanel = new JPanel();
     private static ToolWindow toolWindow;
+
+    // Single title label we update on each file switch
+    private static final JLabel titleLabel = new JLabel();
+    private static final JLabel questionLabel = new JLabel();
+    // track whether content has been added to the tool window
+    private static boolean initialized = false;
 
     private static final Logger LOGGER = Logger.getInstance(WindowFactory.class);
 
@@ -37,30 +43,52 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
     }
 
     public static void flashToolWindow(String currentFilePath) {
-        if(toolWindow == null) return;
+        if (toolWindow == null) return;
         ContentManager contentManager = WindowFactory.getToolWindow().getContentManager();
-        contentManager.removeAllContents(true);
 
-        mainPanel.add(titlePanel, BorderLayout.NORTH);
-        mainPanel.add(questionPanel, BorderLayout.CENTER);
-        mainPanel.add(settingsPanel, BorderLayout.SOUTH);
+        // If content hasn't been added yet (first time), create and add it once.
+        if (!initialized || contentManager.getContentCount() == 0) {
+            // Ensure panels are clean the first time
+            titlePanel.removeAll();
+            questionPanel.removeAll();
+            settingsPanel.removeAll();
+            mainPanel.removeAll();
 
-        //设置标题面板
-        JLabel titleLabel = new JLabel();
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+            // setup layout and add panels
+            mainPanel.add(titlePanel, BorderLayout.NORTH);
+            mainPanel.add(questionPanel, BorderLayout.CENTER);
+            mainPanel.add(settingsPanel, BorderLayout.SOUTH);
+
+            // configure title label once
+            titleLabel.setFont(new Font("Consolas", Font.BOLD, 16));
+            questionLabel.setFont(new Font("Consolas", Font.BOLD, 16));
+            titlePanel.add(titleLabel);
+            titlePanel.add(questionLabel);
+
+            //添加主面板到工具窗口
+            ContentFactory contentFactory = ContentFactory.getInstance();
+            Content content = contentFactory.createContent(mainPanel, "", false);
+            toolWindow.getContentManager().addContent(content);
+
+            initialized = true;
+        }
+
+        // Update title based on current file
         Question currentQuestionData = FilesUtils.getCurrentQuestionData(currentFilePath);
         if (currentQuestionData != null) {
-            titleLabel.setText(currentQuestionData.getGroup() + " - " + currentQuestionData.getName());
+            titleLabel.setText(currentQuestionData.getGroup());
+            questionLabel.setText(currentQuestionData.getName());
             System.out.println("Current question: " + currentQuestionData.getGroup() + " - " + currentQuestionData.getName());
-        }else{
+        } else {
             titleLabel.setText("Choose a question file to view details");
+            System.out.println("No question data found for file: " + currentFilePath);
         }
-        titlePanel.add(titleLabel);
 
-        //添加主面板到工具窗口
-        ContentFactory contentFactory = ContentFactory.getInstance();
-        Content content = contentFactory.createContent(mainPanel, "", false);
-        toolWindow.getContentManager().addContent(content);
+        // Refresh UI
+        titlePanel.revalidate();
+        titlePanel.repaint();
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
     public static ToolWindow getToolWindow() {
