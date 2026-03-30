@@ -5,21 +5,43 @@
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-name -->
-    <name>Competitive-companion-onIDEA</name>
+    <name>Competitive-Companion-OnIDEA</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor url="https://www.yourcompany.com">YourCompany</vendor>
+    <vendor url="https://www.azazel.icu">Azathorpe</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
-    <description>
+    <description><![CDATA[
         A simple plugin to integrate Competitive Companion with JetBrains IDEs.
+        <br/>
         It allows you to fetch competitive programming problems directly into your IDE for a seamless coding experience.
-
+        <br/>
         Thank 4 ur use!
+        <br/>
         If u find any bugs or have suggestions, feel free to open an issue on the GitHub repository:
-            https://github.com/LuanHeMuYu
+            https://github.com/Azathorpe/competitive-companion-onIDEA
+        <br/><br/>
+        一个简单的插件，能够将 Competitive Companion 与 JetBrains IDE 集成。它允许您直接在 IDE 中获取竞赛编程问题，以实现无缝的编码体验。
+        <br/>
+        感谢使用！如果您发现任何错误或有任何建议，请随时在 GitHub 仓库上打开一个 issue：
+            https://github.com/Azathorpe/competitive-companion-onIDEA
+        ]]>
     </description>
+
+    <change-notes><![CDATA[
+         Change notes displayed on the Plugin Page and IDE Plugin Manager when a new version of the plugin is released.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-change-notes
+        <version>1.0.0</version>
+        <changes>
+            <change>Initial release of Competitive-companion-onIDEA plugin.</change>
+            <change>Added support for fetching competitive programming problems directly into JetBrains IDEs.</change>
+            <change>Implemented a tool window for displaying fetched problems and their details.</change>
+            <change>Added settings configurable for customizing plugin behavior.</change>
+            <change>Improved user interface for better user experience.</change>
+        </changes>
+        ]]>
+    </change-notes>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
@@ -32,20 +54,21 @@
         <applicationConfigurable
                 parentId="tools"
                 instance="com.azathorpe.cci.settings.CCISettingsConfigurable"
-                displayName="Competitive Companion OnIDEA"
+                displayName="Competitive-Companion-OnIDEA"
                 id="cci.settings"/>
 
         <toolWindow factoryClass="com.azathorpe.cci.window.WindowFactory" id="cci" anchor="left" secondary="true"
                     icon="com.azathorpe.cci.icons.CCIIcons.CCI_ICON"/>
-<!--        <applicationService serviceImplementation="com.azathorpe.cci.service.MyPluginInitService"/>-->
     </extensions>
+    
+    <idea-version since-build="231.0"/>
 
     <applicationListeners>
         <listener class="com.azathorpe.cci.listener.FileSwitchListener" topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
     </applicationListeners>
 
     <actions>
-        <action id="cci.editor.setCurrentLanguageTemplateAction" class="com.azathorpe.cci.actions.editor.SetCurrentLanguageTemplate"
+        <action id="cci.editor.setCurrentLanguageTemplateAction" class="com.azathorpe.cci.actions.editor.SetAsCurrentLanguageTemplate"
                 text="Set Current Language Template" description="Set current language template">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>

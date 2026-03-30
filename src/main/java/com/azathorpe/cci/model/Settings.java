@@ -7,8 +7,8 @@ import com.alibaba.fastjson2.JSON;
  * @version 1.0
  */
 public class Settings {
-    String language;
-    String autoFetchProblems;
+    String language = "Java";
+    String autoFetchProblems = "true";
 
     public String getLanguage() {
         return language;

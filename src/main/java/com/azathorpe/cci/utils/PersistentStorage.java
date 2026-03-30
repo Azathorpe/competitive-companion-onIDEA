@@ -3,7 +3,6 @@ package com.azathorpe.cci.utils;
 import com.azathorpe.cci.impls.Impls;
 import com.azathorpe.cci.impls.JavaImpl;
 import com.azathorpe.cci.model.Question;
-import com.azathorpe.cci.model.Settings;
 import com.intellij.openapi.diagnostic.Logger;
 
 /**
@@ -17,6 +16,8 @@ public class PersistentStorage {
     static String settingsPath = System.getProperty("user.home") + "/.cci/";
 
     static String basePath = Infos.getProject().getBasePath();
+
+    static String lastChangedFilePath = "";
 
     /**
      * 测试用例的位置
@@ -76,6 +77,14 @@ public class PersistentStorage {
 
     public static void setBasePath(String basePath) {
         PersistentStorage.basePath = basePath;
+    }
+
+    public static String getLastChangedFilePath() {
+        return lastChangedFilePath;
+    }
+
+    public static void setLastChangedFilePath(String lastChangedFilePath) {
+        PersistentStorage.lastChangedFilePath = lastChangedFilePath;
     }
 
     static {
