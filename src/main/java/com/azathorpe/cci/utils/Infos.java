@@ -15,15 +15,22 @@ import java.io.*;
  * @version 1.1
  */
 public class Infos {
-    public static final String userConfigPath = System.getProperty("user.home") + "/.cci/properties.json";
-    public static final String userTemplateFolder = System.getProperty("user.home") + "/.cci/templates";
+    public static final String userConfigPath = System.getProperty("user.home") + "\\.cci\\properties.json";
+    public static final String userTemplateFolder = System.getProperty("user.home") + "\\.cci\\templates";
 
-    public static Settings settings;
+    public static Settings settings = new Settings();
 
     /**
      * 更新用户的配置信息，重新读取配置文件并解析成Settings对象
      */
     public static void updateSettings(){
+        //检查文件是否存在
+        try {
+            FilesUtils.fileInitialize(userConfigPath,settings.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         //读取用户的配置信息，如果没有找到配置文件或者配置文件中没有语言信息，则使用默认的语言（Java）
         StringBuilder sb = new StringBuilder();
         try {

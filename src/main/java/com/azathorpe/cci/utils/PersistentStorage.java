@@ -6,6 +6,8 @@ import com.azathorpe.cci.model.Question;
 import com.azathorpe.cci.model.Settings;
 import com.intellij.openapi.diagnostic.Logger;
 
+import java.io.IOException;
+
 /**
  * 持久化存储
  */

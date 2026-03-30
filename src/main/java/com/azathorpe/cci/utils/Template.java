@@ -27,9 +27,12 @@ public class Template {
      * @param question 题目信息，用于替换模板中的变量
      */
     public static void copyTemplate(String targetPath, Question question) {
+        //确保模板文件夹存在
+        FilesUtils.folderInitialize(Infos.userTemplateFolder);
+
         //替换变量
         //获取所有替换的变量
-        String template = FilesUtils.getFileContent(Infos.userTemplateFolder + "/" + Infos.settings.getLanguage() + ".template");
+        String template = FilesUtils.getFileContent(Infos.userTemplateFolder + "\\" + Infos.settings.getLanguage() + ".template");
         template = template.replace(CLASS_NAME, question.getName());
         template = template.replace(PACKAGE_NAME, question.getGroup());
         template = template.replace(QUESTION_NAME, question.getName());

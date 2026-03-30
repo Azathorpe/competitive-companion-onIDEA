@@ -56,22 +56,6 @@ public class CCISettingsConfigurable implements Configurable {
         languagePanel.add(comboBoxLanguage, BorderLayout.CENTER);
         panel.add(languagePanel);
 
-        //TODO: Add a button to open a new window to edit the code template
-        JButton changeTemplateButton = new JButton("Change Code Template");
-        changeTemplateButton.addActionListener(e -> {
-            PopupWindow popupWindow = new PopupWindow(null, true){
-                @Override
-                protected @Nullable JComponent createCenterPanel() {
-                    TextArea textArea = new TextArea();
-                    textArea.setText(PersistenceStorage.getTemplateFileContent());
-                    panel.add(textArea);
-                    return panel;
-                }
-            };
-            popupWindow.show();
-        });
-        mainPanel.add(changeTemplateButton);
-
         return panel;
     }
 

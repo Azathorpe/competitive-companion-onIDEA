@@ -2,6 +2,7 @@ package com.azathorpe.cci.utils;
 
 import com.alibaba.fastjson2.JSON;
 import com.azathorpe.cci.model.Question;
+import com.intellij.openapi.diagnostic.Logger;
 
 import java.io.*;
 
@@ -11,7 +12,16 @@ import java.io.*;
  * @version 1.0
  */
 public class FilesUtils {
+    private static Logger LOG = Logger.getInstance(FilesUtils.class);
+
     public static String getFileContent(String filePath) {
+        try {
+            System.out.println(filePath);
+            fileInitialize(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         StringBuilder sb = new StringBuilder();
         try {
             FileReader fr = new FileReader(filePath);
@@ -42,5 +52,50 @@ public class FilesUtils {
             return null;
         }
         return JSON.parseObject(getFileContent(questionDataPath), Question.class);
+    }
+
+    /**
+     * 创建一个新的文件，如果文件已经存在则不进行任何操作
+     * @param path 文件路径
+     * @throws IOException
+     */
+    public static void fileInitialize(String path) throws IOException {
+        fileInitialize(path, "");
+    }
+
+    /**
+     * 创建一个新的文件，并写入内容，如果文件已经存在则不进行任何操作
+     * @param path 文件路径
+     * @param content 文件内容
+     * @throws IOException
+     */
+    public static void fileInitialize(String path, String content) throws IOException {
+        File file = new File(path);
+        if(file.createNewFile())
+            LOG.info("File created: " + file.getAbsolutePath());
+        else {
+            LOG.info("File already exists: " + file.getAbsolutePath());
+            return;
+        }
+        FileWriter fw = new FileWriter(file);
+        fw.write(content);
+        fw.close();
+    }
+
+    /**
+     * 创建一个新的文件夹，如果文件夹已经存在则不进行任何操作
+     * @param path 文件夹路径
+     */
+    public static void folderInitialize(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            if (file.mkdirs()) {
+                LOG.info("Folder created: " + file.getAbsolutePath());
+            } else {
+                LOG.warn("Failed to create folder: " + file.getAbsolutePath());
+            }
+        } else {
+            LOG.info("Folder already exists: " + file.getAbsolutePath());
+        }
     }
 }
