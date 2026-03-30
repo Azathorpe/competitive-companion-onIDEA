@@ -17,6 +17,8 @@ public class PersistentStorage {
 
     static String basePath = Infos.getProject().getBasePath();
 
+    static String lastChangedFilePath = "";
+
     /**
      * 测试用例的位置
      */
@@ -75,6 +77,14 @@ public class PersistentStorage {
 
     public static void setBasePath(String basePath) {
         PersistentStorage.basePath = basePath;
+    }
+
+    public static String getLastChangedFilePath() {
+        return lastChangedFilePath;
+    }
+
+    public static void setLastChangedFilePath(String lastChangedFilePath) {
+        PersistentStorage.lastChangedFilePath = lastChangedFilePath;
     }
 
     static {

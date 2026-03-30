@@ -59,7 +59,6 @@
 
         <toolWindow factoryClass="com.azathorpe.cci.window.WindowFactory" id="cci" anchor="left" secondary="true"
                     icon="com.azathorpe.cci.icons.CCIIcons.CCI_ICON"/>
-<!--        <applicationService serviceImplementation="com.azathorpe.cci.service.MyPluginInitService"/>-->
     </extensions>
     
     <idea-version since-build="231.0"/>
@@ -69,7 +68,7 @@
     </applicationListeners>
 
     <actions>
-        <action id="cci.editor.setCurrentLanguageTemplateAction" class="com.azathorpe.cci.actions.editor.SetCurrentLanguageTemplate"
+        <action id="cci.editor.setCurrentLanguageTemplateAction" class="com.azathorpe.cci.actions.editor.SetAsCurrentLanguageTemplate"
                 text="Set Current Language Template" description="Set current language template">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>

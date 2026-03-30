@@ -96,4 +96,30 @@ public class FilesUtils {
             LOG.info("Folder already exists: " + file.getAbsolutePath());
         }
     }
+
+    /**
+     * 复制文件到目标
+     * @param ori 源文件
+     * @param target 目标位置
+     */
+    public static void copyFileTo(File ori,File target){
+        try {
+            FileReader fr = new FileReader(ori);
+            BufferedReader br = new BufferedReader(fr);
+            FileWriter fw = new FileWriter(target);
+
+            String line = "";
+            while((line = br.readLine()) != null) {
+                fw.write(line);
+                fw.write("\n");
+            }
+
+            fw.close();
+            br.close();
+            fr.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

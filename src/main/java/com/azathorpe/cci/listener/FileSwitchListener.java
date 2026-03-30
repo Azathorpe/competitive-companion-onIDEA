@@ -1,6 +1,7 @@
 package com.azathorpe.cci.listener;
 
 import com.azathorpe.cci.utils.FilesUtils;
+import com.azathorpe.cci.utils.PersistentStorage;
 import com.azathorpe.cci.window.WindowFactory;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -27,6 +28,7 @@ public class FileSwitchListener implements FileEditorManagerListener {
             if (event.getNewFile() != null) {
                 WindowFactory.flashToolWindow(event.getNewFile().getPath());
                 System.out.println("File switched to: " + event.getNewFile().getPath());
+                PersistentStorage.setLastChangedFilePath(event.getNewFile().getPath());
             }else{
                 LOGGER.info("No file is currently selected.");
                 //是Null 我就不处理了
