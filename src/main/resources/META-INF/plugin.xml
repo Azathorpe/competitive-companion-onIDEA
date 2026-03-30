@@ -5,10 +5,10 @@
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-name -->
-    <name>Competitive-companion-onIDEA</name>
+    <name>Competitive-Companion-OnIDEA</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor url="https://www.yourcompany.com">YourCompany</vendor>
+    <vendor url="https://www.azazel.icu">Azathorpe</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
@@ -54,7 +54,7 @@
         <applicationConfigurable
                 parentId="tools"
                 instance="com.azathorpe.cci.settings.CCISettingsConfigurable"
-                displayName="Competitive Companion OnIDEA"
+                displayName="Competitive-Companion-OnIDEA"
                 id="cci.settings"/>
 
         <toolWindow factoryClass="com.azathorpe.cci.window.WindowFactory" id="cci" anchor="left" secondary="true"

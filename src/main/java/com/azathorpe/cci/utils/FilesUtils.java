@@ -12,7 +12,7 @@ import java.io.*;
  * @version 1.0
  */
 public class FilesUtils {
-    private static Logger LOG = Logger.getInstance(FilesUtils.class);
+    private static final Logger LOG = Logger.getInstance(FilesUtils.class);
 
     public static String getFileContent(String filePath) {
         try {
@@ -57,7 +57,6 @@ public class FilesUtils {
     /**
      * 创建一个新的文件，如果文件已经存在则不进行任何操作
      * @param path 文件路径
-     * @throws IOException
      */
     public static void fileInitialize(String path) throws IOException {
         fileInitialize(path, "");
@@ -67,7 +66,6 @@ public class FilesUtils {
      * 创建一个新的文件，并写入内容，如果文件已经存在则不进行任何操作
      * @param path 文件路径
      * @param content 文件内容
-     * @throws IOException
      */
     public static void fileInitialize(String path, String content) throws IOException {
         File file = new File(path);

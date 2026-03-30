@@ -1,16 +1,14 @@
 package com.azathorpe.cci.settings;
 
-import com.azathorpe.cci.model.Settings;
 import com.azathorpe.cci.utils.Infos;
-import com.azathorpe.cci.utils.PersistentStorage;
 import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.util.NlsContexts;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * 调整设置的地方
@@ -47,7 +45,7 @@ public class CCISettingsConfigurable implements Configurable {
         ComboBox<String> comboBoxLanguage = new ComboBox<>(new String[]{"Java", "Python", "C++"});
         comboBoxLanguage.setSelectedIndex(Infos.settings.getLanguage().equals("Java") ? 0 : Infos.settings.getLanguage().equals("Python") ? 1 : 2);
         comboBoxLanguage.addActionListener(e -> {
-            String language = comboBoxLanguage.getSelectedItem().toString();
+            String language = Objects.requireNonNull(comboBoxLanguage.getSelectedItem()).toString();
             Infos.settings.setLanguage(language);
             isModified = true;
         });
