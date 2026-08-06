@@ -2,10 +2,10 @@ package runner.compiler;
 
 import com.azathorpe.cci.model.TestCase;
 import com.azathorpe.cci.utils.PersistentStorage;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.intellij.openapi.diagnostic.Logger;
 import runner.Message;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -13,17 +13,17 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class CPPCompiler implements Compiler{
+public class CPPCompiler implements Compiler {
 
-    private static final Log log = LogFactory.getLog(CPPCompiler.class);
+    private static final Logger log = Logger.getInstance(CPPCompiler.class);
+    private static final String EXECUTABLE = PersistentStorage.getCompilePath() + File.separator + "run";
 
     @Override
     public String compile(String sourceFile) {
         log.info(sourceFile + " is compiling...");
-        // 编译
         try {
             Process compileProcess = new ProcessBuilder(
-                   "g++","-o","run.exe",sourceFile
+                    "g++", "-o", EXECUTABLE, sourceFile
             ).start();
             boolean finished = compileProcess.waitFor(30, TimeUnit.SECONDS);
             if (!finished) {
@@ -45,9 +45,7 @@ public class CPPCompiler implements Compiler{
     @Override
     public Message execute(String sourceFile, TestCase testCases) {
         try {
-            Process process = new ProcessBuilder(
-                    PersistentStorage.getCompilePath() + "/run.exe"
-            ).start();
+            Process process = new ProcessBuilder(EXECUTABLE).start();
 
             new Thread(() -> {
                 try (OutputStream stdin = process.getOutputStream()) {
@@ -56,7 +54,6 @@ public class CPPCompiler implements Compiler{
                 }
             }).start();
 
-            // 线程1：消费 stdout
             CompletableFuture<String> stdoutFuture = CompletableFuture.supplyAsync(() -> {
                 try (var is = process.getInputStream()) {
                     return new String(is.readAllBytes(), StandardCharsets.UTF_8);
@@ -65,7 +62,6 @@ public class CPPCompiler implements Compiler{
                 }
             });
 
-            // 线程2：消费 stderr
             CompletableFuture<String> stderrFuture = CompletableFuture.supplyAsync(() -> {
                 try (var es = process.getErrorStream()) {
                     return new String(es.readAllBytes(), StandardCharsets.UTF_8);

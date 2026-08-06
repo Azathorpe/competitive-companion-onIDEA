@@ -109,14 +109,31 @@ public class QuestionPane extends JPanel {
                         PersistentStorage.getLastChangedFilePath(),
                         new TestCase(inputArea.getText(), outputArea.getText()));
                 SwingUtilities.invokeLater(() -> {
-                    myOutputArea.setText(result.getOutput());
-                    if (result.isStatus()) {
-                        statusLabel.setText("  PASS");
-                        statusLabel.setForeground(JBColor.GREEN);
-                    } else {
-                        statusLabel.setText("  FAIL");
+                    String error = result.getError();
+                    String output = result.getOutput();
+
+                    if (error != null && !error.isEmpty()) {
+                        // 编译错误 或 运行时错误 / 超时
+                        myOutputArea.setText(error);
+                        myOutputArea.setForeground(JBColor.RED);
+                        statusLabel.setText("  ERROR");
                         statusLabel.setForeground(JBColor.RED);
+                        myAnswerLabel.setText("Error:");
+                    } else {
+                        // 正常输出，判断 PASS / FAIL
+                        myOutputArea.setText(output);
+                        if (result.isStatus()) {
+                            myOutputArea.setForeground(JBColor.GREEN);
+                            statusLabel.setText("  PASS");
+                            statusLabel.setForeground(JBColor.GREEN);
+                        } else {
+                            myOutputArea.setForeground(JBColor.RED);
+                            statusLabel.setText("  FAIL");
+                            statusLabel.setForeground(JBColor.RED);
+                        }
+                        myAnswerLabel.setText("My Answer:");
                     }
+
                     statusLabel.setVisible(true);
                     myAnswerLabel.setVisible(true);
                     outputScrollPane.setVisible(true);

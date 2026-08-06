@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import runner.compiler.CCompiler;
 import runner.compiler.CPPCompiler;
 import runner.compiler.Compiler;
 import runner.compiler.JavaCompiler;
@@ -67,9 +68,13 @@ public class Infos {
             compiler = new JavaCompiler();
             log.info("Compiler load in Java");
         }
+        else if(settings.getLanguage().equals(C)) {
+            compiler = new CCompiler();
+            log.info("Compiler load in C");
+        }
         else if(settings.getLanguage().equals(CPP)) {
             compiler = new CPPCompiler();
-            log.info("Compiler load in CPP");
+            log.info("Compiler load in C++");
         }
         else
             compiler = new JavaCompiler();
