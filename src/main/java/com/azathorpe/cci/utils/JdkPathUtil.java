@@ -1,13 +1,10 @@
 package com.azathorpe.cci.utils;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.projectRoots.ProjectJdkTable;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ProjectRootManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
 
 public class JdkPathUtil {
     private static final Logger log = LoggerFactory.getLogger(JdkPathUtil.class);

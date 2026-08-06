@@ -4,8 +4,9 @@ import com.azathorpe.cci.model.TestCase;
 import com.azathorpe.cci.utils.FilesUtils;
 import com.azathorpe.cci.utils.JdkPathUtil;
 import com.azathorpe.cci.utils.PersistentStorage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import runner.Message;
 
 import java.io.IOException;
@@ -16,11 +17,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class JavaCompiler implements Compiler {
-    private static final Logger log = LoggerFactory.getLogger(JavaCompiler.class);
+
+    private static final Log log = LogFactory.getLog(JavaCompiler.class);
 
     @Override
     public String compile(String sourceFile) {
-        log.info("{} is compiling...", sourceFile);
+        log.info(sourceFile + " is compiling...");
         // 编译
         try {
             Process compileProcess = new ProcessBuilder(
@@ -85,7 +87,7 @@ public class JavaCompiler implements Compiler {
 
             return new Message(output, errors);
         } catch (IOException | InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
-            log.error("{}", e.toString());
+            log.error(e.toString());
             return new Message("", e.toString());
         }
     }

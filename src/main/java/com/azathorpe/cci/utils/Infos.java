@@ -5,8 +5,8 @@ import com.azathorpe.cci.model.Settings;
 import com.azathorpe.cci.service.SocketService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import runner.compiler.CPPCompiler;
 import runner.compiler.Compiler;
 import runner.compiler.JavaCompiler;
@@ -25,7 +25,7 @@ public class Infos {
     public static final String C = "C";
     public static final String CPP = "C++";
     public static final String PYTHON = "Python";
-    private static final Logger log = LoggerFactory.getLogger(Infos.class);
+    private static final Log log = LogFactory.getLog(Infos.class);
 
     public static Settings settings = new Settings();
     public static Compiler compiler = null;

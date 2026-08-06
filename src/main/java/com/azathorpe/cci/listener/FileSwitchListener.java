@@ -1,6 +1,5 @@
 package com.azathorpe.cci.listener;
 
-import com.azathorpe.cci.utils.FilesUtils;
 import com.azathorpe.cci.utils.PersistentStorage;
 import com.azathorpe.cci.window.WindowFactory;
 import com.intellij.openapi.diagnostic.Logger;
@@ -8,7 +7,6 @@ import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.content.ContentManager;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
