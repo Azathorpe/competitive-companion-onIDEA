@@ -1,10 +1,7 @@
 package com.azathorpe.cci.utils;
 
 import com.alibaba.fastjson2.JSON;
-import com.azathorpe.cci.impls.CImpl;
-import com.azathorpe.cci.impls.CppImpl;
-import com.azathorpe.cci.impls.Impls;
-import com.azathorpe.cci.impls.JavaImpl;
+import com.azathorpe.cci.impls.*;
 import com.azathorpe.cci.model.Settings;
 import com.azathorpe.cci.service.SocketService;
 import com.intellij.openapi.project.Project;
@@ -74,25 +71,23 @@ public class Infos {
 
         //更新infos的Compile
         //更新infos的Impl
-        if(settings.getLanguage().equals(JAVA)) {
-            compiler = new JavaCompiler();
-            saveImpls = new JavaImpl();
-        }
-        else if(settings.getLanguage().equals(C)) {
-            compiler = new CCompiler();
-            saveImpls = new CImpl();
-        }
-        else if(settings.getLanguage().equals(CPP)) {
-            compiler = new CPPCompiler();
-            saveImpls = new CppImpl();
-        }
-        else if(settings.getLanguage().equals(PYTHON)) {
-            compiler = new PythonInterpreter();
-            saveImpls = new JavaImpl(); // Python 也用 JavaImpl 存放题目文件，后续可替换
-        }
-        else {
-            compiler = new JavaCompiler();
-            saveImpls = new JavaImpl();
+        switch (settings.getLanguage()) {
+            case C -> {
+                compiler = new CCompiler();
+                saveImpls = new CImpl();
+            }
+            case CPP -> {
+                compiler = new CPPCompiler();
+                saveImpls = new CppImpl();
+            }
+            case PYTHON -> {
+                compiler = new PythonInterpreter();
+                saveImpls = new PythonImpl();
+            }
+            default -> {
+                compiler = new JavaCompiler();
+                saveImpls = new JavaImpl();
+            }
         }
 
     }
