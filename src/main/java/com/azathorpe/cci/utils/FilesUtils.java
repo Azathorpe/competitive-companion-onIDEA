@@ -48,7 +48,7 @@ public class FilesUtils {
         if (currentFilePath.equals("NOT_DEFINED")) {
             return null;
         }
-        String questionDataPath = PersistentStorage.saveImpls.getQuestionDatas(currentFilePath);
+        String questionDataPath = Infos.saveImpls.getQuestionDatas(currentFilePath);
         if (!new File(questionDataPath).exists()) {
             return null;
         }

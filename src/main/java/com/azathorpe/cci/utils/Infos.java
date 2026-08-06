@@ -1,6 +1,10 @@
 package com.azathorpe.cci.utils;
 
 import com.alibaba.fastjson2.JSON;
+import com.azathorpe.cci.impls.CImpl;
+import com.azathorpe.cci.impls.CppImpl;
+import com.azathorpe.cci.impls.Impls;
+import com.azathorpe.cci.impls.JavaImpl;
 import com.azathorpe.cci.model.Settings;
 import com.azathorpe.cci.service.SocketService;
 import com.intellij.openapi.project.Project;
@@ -11,6 +15,7 @@ import runner.compiler.CCompiler;
 import runner.compiler.CPPCompiler;
 import runner.compiler.Compiler;
 import runner.compiler.JavaCompiler;
+import runner.compiler.PythonInterpreter;
 
 import java.io.*;
 
@@ -29,6 +34,10 @@ public class Infos {
     private static final Log log = LogFactory.getLog(Infos.class);
 
     public static Settings settings = new Settings();
+    /**
+     * 保存题目信息和测试数据的实现类，根据不同的编程语言来实现这个接口
+     */
+    public static Impls saveImpls = null;
     public static Compiler compiler = null;
 
     /**
@@ -64,20 +73,28 @@ public class Infos {
         settings = JSON.parseObject(sb.toString(), Settings.class);
 
         //更新infos的Compile
+        //更新infos的Impl
         if(settings.getLanguage().equals(JAVA)) {
             compiler = new JavaCompiler();
-            log.info("Compiler load in Java");
+            saveImpls = new JavaImpl();
         }
         else if(settings.getLanguage().equals(C)) {
             compiler = new CCompiler();
-            log.info("Compiler load in C");
+            saveImpls = new CImpl();
         }
         else if(settings.getLanguage().equals(CPP)) {
             compiler = new CPPCompiler();
-            log.info("Compiler load in C++");
+            saveImpls = new CppImpl();
         }
-        else
+        else if(settings.getLanguage().equals(PYTHON)) {
+            compiler = new PythonInterpreter();
+            saveImpls = new JavaImpl(); // Python 也用 JavaImpl 存放题目文件，后续可替换
+        }
+        else {
             compiler = new JavaCompiler();
+            saveImpls = new JavaImpl();
+        }
+
     }
 
     /**

@@ -46,7 +46,7 @@ public class CCISettingsConfigurable implements Configurable {
         comboBoxLanguage.setSelectedIndex(
                         Infos.settings.getLanguage().equals(Infos.JAVA) ? 0 :
                         Infos.settings.getLanguage().equals(Infos.PYTHON) ? 1 :
-                        Infos.settings.getLanguage().equals(Infos.C) ? 2 :
+                        Infos.settings.getLanguage().equals(Infos.CPP) ? 2 :
                         3);
         comboBoxLanguage.addActionListener(e -> {
             String language = Objects.requireNonNull(comboBoxLanguage.getSelectedItem()).toString();

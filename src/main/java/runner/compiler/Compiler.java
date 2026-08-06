@@ -25,7 +25,7 @@ public interface Compiler {
     };
 
     default Message judge(TestCase testCase, Message output){
-        output.setStatus(testCase.getOutput().trim().equals(output.getOutput()));
+        output.setStatus(testCase.getOutput().trim().equals(output.getOutput().trim()));
         return output;
     };
 }

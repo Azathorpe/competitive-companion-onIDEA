@@ -16,26 +16,46 @@ import java.util.concurrent.TimeoutException;
 public class CPPCompiler implements Compiler {
 
     private static final Logger log = Logger.getInstance(CPPCompiler.class);
-    private static final String EXECUTABLE = PersistentStorage.getCompilePath() + File.separator + "run";
+
+    private static String getExecutablePath() {
+        String name = System.getProperty("os.name").toLowerCase().contains("win") ? "run.exe" : "run";
+        return PersistentStorage.getCompilePath() + File.separator + name;
+    }
 
     @Override
     public String compile(String sourceFile) {
-        log.info(sourceFile + " is compiling...");
+        String exePath = getExecutablePath();
+        log.info(sourceFile + " is compiling... -> " + exePath);
+
+        // 确保编译输出目录存在
+        File outputDir = new File(PersistentStorage.getCompilePath());
+        if (!outputDir.exists()) {
+            outputDir.mkdirs();
+        }
+
+        //删除之前编译产生的文件
+        if (new File(exePath).delete())
+            System.out.println("Delete old exe file.");
+
         try {
             Process compileProcess = new ProcessBuilder(
-                    "g++", "-o", EXECUTABLE, sourceFile
-            ).start();
+                    "g++", "-o", exePath, sourceFile
+            ).redirectErrorStream(true).start();
             boolean finished = compileProcess.waitFor(30, TimeUnit.SECONDS);
             if (!finished) {
                 compileProcess.destroyForcibly();
                 return "Compile Error: compilation timed out";
             }
             if (compileProcess.exitValue() != 0) {
-                String errors = new String(compileProcess.getErrorStream().readAllBytes(), StandardCharsets.UTF_8);
+                String errors = new String(compileProcess.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
                 return "Compile Error:\n" + errors;
             }
+            // 确认编译产物确实已生成
+            if (!new File(exePath).exists()) {
+                return "Compile Error: g++ reported success but executable not found:\n" + exePath;
+            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return "Compile Error: g++ not found. Please install GCC/G++ and add it to PATH.\n" + e.getMessage();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -44,8 +64,9 @@ public class CPPCompiler implements Compiler {
 
     @Override
     public Message execute(String sourceFile, TestCase testCases) {
+        String exePath = getExecutablePath();
         try {
-            Process process = new ProcessBuilder(EXECUTABLE).start();
+            Process process = new ProcessBuilder(exePath).start();
 
             new Thread(() -> {
                 try (OutputStream stdin = process.getOutputStream()) {

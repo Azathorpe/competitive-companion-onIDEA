@@ -30,24 +30,6 @@ public class JavaImpl implements Impls {
     }
 
     @Override
-    public String saveTests(Question question,String path) {
-        String targetFolder = path + "/.cci_questions/" + question.getGroup(),fileName = question.getName() + ".json";
-        File file = new File(targetFolder);
-        if (!file.exists())
-            file.mkdirs();
-        file = new File(targetFolder + "/" + fileName);
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(JSON.toJSONString(question));
-            fileWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return targetFolder + "/" + fileName;
-    }
-
-    @Override
     public String getQuestionDatas(String currentFilePath) {
         return currentFilePath.replace("src", ".cci_questions").replace(".java", ".json");
     }
