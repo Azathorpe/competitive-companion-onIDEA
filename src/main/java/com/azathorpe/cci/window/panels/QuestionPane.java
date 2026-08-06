@@ -5,7 +5,7 @@ import com.azathorpe.cci.utils.Infos;
 import com.azathorpe.cci.utils.PersistentStorage;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
-import runner.Message;
+import com.azathorpe.cci.runner.Message;
 
 import javax.swing.*;
 import java.awt.*;

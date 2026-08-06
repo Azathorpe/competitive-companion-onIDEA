@@ -1,11 +1,14 @@
-package runner.compiler;
+package com.azathorpe.cci.runner.compiler;
 
 import com.azathorpe.cci.model.TestCase;
+import com.azathorpe.cci.utils.FilesUtils;
+import com.azathorpe.cci.utils.JdkPathUtil;
 import com.azathorpe.cci.utils.PersistentStorage;
-import com.intellij.openapi.diagnostic.Logger;
-import runner.Message;
 
-import java.io.File;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import com.azathorpe.cci.runner.Message;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -13,45 +16,29 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class CCompiler implements Compiler {
+public class JavaCompiler implements Compiler {
 
-    private static final Logger log = Logger.getInstance(CCompiler.class);
-
-    private static String getExecutablePath() {
-        String name = System.getProperty("os.name").toLowerCase().contains("win") ? "run.exe" : "run";
-        return PersistentStorage.getCompilePath() + File.separator + name;
-    }
+    private static final Log log = LogFactory.getLog(JavaCompiler.class);
 
     @Override
     public String compile(String sourceFile) {
-        String exePath = getExecutablePath();
-        log.info(sourceFile + " is compiling... -> " + exePath);
-
-        // 确保编译输出目录存在
-        File outputDir = new File(PersistentStorage.getCompilePath());
-        if (!outputDir.exists()) {
-            outputDir.mkdirs();
-        }
-
+        log.info(sourceFile + " is compiling...");
+        // 编译
         try {
             Process compileProcess = new ProcessBuilder(
-                    "gcc", "-o", exePath, sourceFile
-            ).redirectErrorStream(true).start();
+                    JdkPathUtil.JDK_PATH + "/bin/javac", "-d", PersistentStorage.getCompilePath(), sourceFile
+            ).start();
             boolean finished = compileProcess.waitFor(30, TimeUnit.SECONDS);
             if (!finished) {
                 compileProcess.destroyForcibly();
                 return "Compile Error: compilation timed out";
             }
             if (compileProcess.exitValue() != 0) {
-                String errors = new String(compileProcess.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+                String errors = new String(compileProcess.getErrorStream().readAllBytes(), StandardCharsets.UTF_8);
                 return "Compile Error:\n" + errors;
             }
-            // 确认编译产物确实已生成
-            if (!new File(exePath).exists()) {
-                return "Compile Error: gcc reported success but executable not found:\n" + exePath;
-            }
         } catch (IOException e) {
-            return "Compile Error: gcc not found. Please install GCC and add it to PATH.\n" + e.getMessage();
+            throw new RuntimeException(e);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -60,9 +47,10 @@ public class CCompiler implements Compiler {
 
     @Override
     public Message execute(String sourceFile, TestCase testCases) {
-        String exePath = getExecutablePath();
         try {
-            Process process = new ProcessBuilder(exePath).start();
+            Process process = new ProcessBuilder(
+                    JdkPathUtil.JDK_PATH + "/bin/java", "-cp", PersistentStorage.getCompilePath(), FilesUtils.exactFQCN(sourceFile)
+            ).start();
 
             new Thread(() -> {
                 try (OutputStream stdin = process.getOutputStream()) {
@@ -71,6 +59,7 @@ public class CCompiler implements Compiler {
                 }
             }).start();
 
+            // 线程1：消费 stdout
             CompletableFuture<String> stdoutFuture = CompletableFuture.supplyAsync(() -> {
                 try (var is = process.getInputStream()) {
                     return new String(is.readAllBytes(), StandardCharsets.UTF_8);
@@ -79,6 +68,7 @@ public class CCompiler implements Compiler {
                 }
             });
 
+            // 线程2：消费 stderr
             CompletableFuture<String> stderrFuture = CompletableFuture.supplyAsync(() -> {
                 try (var es = process.getErrorStream()) {
                     return new String(es.readAllBytes(), StandardCharsets.UTF_8);

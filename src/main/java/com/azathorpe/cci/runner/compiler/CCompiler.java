@@ -1,9 +1,9 @@
-package runner.compiler;
+package com.azathorpe.cci.runner.compiler;
 
 import com.azathorpe.cci.model.TestCase;
 import com.azathorpe.cci.utils.PersistentStorage;
 import com.intellij.openapi.diagnostic.Logger;
-import runner.Message;
+import com.azathorpe.cci.runner.Message;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +13,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class CPPCompiler implements Compiler {
+public class CCompiler implements Compiler {
 
-    private static final Logger log = Logger.getInstance(CPPCompiler.class);
+    private static final Logger log = Logger.getInstance(CCompiler.class);
 
     private static String getExecutablePath() {
         String name = System.getProperty("os.name").toLowerCase().contains("win") ? "run.exe" : "run";
@@ -33,13 +33,9 @@ public class CPPCompiler implements Compiler {
             outputDir.mkdirs();
         }
 
-        //删除之前编译产生的文件
-        if (new File(exePath).delete())
-            System.out.println("Delete old exe file.");
-
         try {
             Process compileProcess = new ProcessBuilder(
-                    "g++", "-o", exePath, sourceFile
+                    "gcc", "-o", exePath, sourceFile
             ).redirectErrorStream(true).start();
             boolean finished = compileProcess.waitFor(30, TimeUnit.SECONDS);
             if (!finished) {
@@ -52,10 +48,10 @@ public class CPPCompiler implements Compiler {
             }
             // 确认编译产物确实已生成
             if (!new File(exePath).exists()) {
-                return "Compile Error: g++ reported success but executable not found:\n" + exePath;
+                return "Compile Error: gcc reported success but executable not found:\n" + exePath;
             }
         } catch (IOException e) {
-            return "Compile Error: g++ not found. Please install GCC/G++ and add it to PATH.\n" + e.getMessage();
+            return "Compile Error: gcc not found. Please install GCC and add it to PATH.\n" + e.getMessage();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -1,7 +1,7 @@
-package runner.compiler;
+package com.azathorpe.cci.runner.compiler;
 
 import com.azathorpe.cci.model.TestCase;
-import runner.Message;
+import com.azathorpe.cci.runner.Message;
 
 import java.util.Objects;
 

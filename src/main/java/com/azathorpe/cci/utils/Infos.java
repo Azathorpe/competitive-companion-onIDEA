@@ -8,11 +8,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import runner.compiler.CCompiler;
-import runner.compiler.CPPCompiler;
-import runner.compiler.Compiler;
-import runner.compiler.JavaCompiler;
-import runner.compiler.PythonInterpreter;
+import com.azathorpe.cci.runner.compiler.CCompiler;
+import com.azathorpe.cci.runner.compiler.CPPCompiler;
+import com.azathorpe.cci.runner.compiler.Compiler;
+import com.azathorpe.cci.runner.compiler.JavaCompiler;
+import com.azathorpe.cci.runner.compiler.PythonInterpreter;
 
 import java.io.*;
 

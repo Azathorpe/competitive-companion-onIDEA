@@ -1,4 +1,4 @@
-package runner;
+package com.azathorpe.cci.runner;
 
 public class Message {
     String output;
