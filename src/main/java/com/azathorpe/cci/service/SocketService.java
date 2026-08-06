@@ -53,7 +53,6 @@ public class SocketService {
 
             if(ok && vif != null)
                 FileEditorManager.getInstance(Infos.getProject()).openFile(vif, true);
-
         });
 
 
@@ -93,7 +92,7 @@ public class SocketService {
         isRunning = false;
     }
 
-    // When the port is received json from Competitive Companion
+    // When the port is received JSON from Competitive Companion
     // Do it own work
     public static void onReceive(Socket client) {
         StringBuilder builder = new StringBuilder();
