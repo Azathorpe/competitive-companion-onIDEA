@@ -5,6 +5,8 @@ import com.azathorpe.cci.impls.JavaImpl;
 import com.azathorpe.cci.model.Question;
 import com.intellij.openapi.diagnostic.Logger;
 
+import java.io.File;
+
 /**
  * 持久化存储
  */
@@ -22,12 +24,17 @@ public class PersistentStorage {
     /**
      * 测试用例的位置
      */
-    static String testsPath = "/.cci_question/testData/";
+    static String testsPath = "/.cci_questions/testData/";
 
     /**
      * 已经解决过的问题存储的位置
      */
-    static String solvedPath = "/.cci_question/solved/";
+    static String solvedPath = "/.cci_questions/solved/";
+
+    /**
+     * 编译文件 only one
+     */
+    static String compilePath = "/.cci_questions/compile/";
 
     /**
      * 保存题目信息和测试数据的实现类，根据不同的编程语言来实现这个接口
@@ -81,6 +88,13 @@ public class PersistentStorage {
 
     public static String getLastChangedFilePath() {
         return lastChangedFilePath;
+    }
+
+    public static String getCompilePath(){
+        File file = new File(basePath + compilePath);
+        if (!file.exists())
+            file.mkdirs();
+        return basePath + compilePath;
     }
 
     public static void setLastChangedFilePath(String lastChangedFilePath) {

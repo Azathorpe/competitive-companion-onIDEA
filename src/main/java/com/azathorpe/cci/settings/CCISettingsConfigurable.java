@@ -42,8 +42,8 @@ public class CCISettingsConfigurable implements Configurable {
 
         //再添加一个下拉框，用户可以选择默认的编程语言
         JLabel labelLanguage = new JLabel("Default Language:");
-        ComboBox<String> comboBoxLanguage = new ComboBox<>(new String[]{"Java", "Python", "C++"});
-        comboBoxLanguage.setSelectedIndex(Infos.settings.getLanguage().equals("Java") ? 0 : Infos.settings.getLanguage().equals("Python") ? 1 : 2);
+        ComboBox<String> comboBoxLanguage = new ComboBox<>(new String[]{Infos.JAVA, Infos.PYTHON, Infos.CPP});
+        comboBoxLanguage.setSelectedIndex(Infos.settings.getLanguage().equals(Infos.JAVA) ? 0 : Infos.settings.getLanguage().equals(Infos.PYTHON) ? 1 : 2);
         comboBoxLanguage.addActionListener(e -> {
             String language = Objects.requireNonNull(comboBoxLanguage.getSelectedItem()).toString();
             Infos.settings.setLanguage(language);

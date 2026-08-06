@@ -5,6 +5,11 @@ import com.azathorpe.cci.model.Settings;
 import com.azathorpe.cci.service.SocketService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import runner.compiler.CPPCompiler;
+import runner.compiler.Compiler;
+import runner.compiler.JavaCompiler;
 
 import java.io.*;
 
@@ -14,10 +19,16 @@ import java.io.*;
  * @version 1.1
  */
 public class Infos {
-    public static final String userConfigPath = System.getProperty("user.home") + "\\.cci\\properties.json";
-    public static final String userTemplateFolder = System.getProperty("user.home") + "\\.cci\\templates";
+    public static final String userConfigPath = System.getProperty("user.home") + File.separator + ".cci" + File.separator + "properties.json";
+    public static final String userTemplateFolder = System.getProperty("user.home") + File.separator + ".cci" + File.separator + "templates";
+    public static final String JAVA = "Java";
+    public static final String C = "C";
+    public static final String CPP = "C++";
+    public static final String PYTHON = "Python";
+    private static final Logger log = LoggerFactory.getLogger(Infos.class);
 
     public static Settings settings = new Settings();
+    public static Compiler compiler = null;
 
     /**
      * 更新用户的配置信息，重新读取配置文件并解析成Settings对象
@@ -50,6 +61,18 @@ public class Infos {
         }
 
         settings = JSON.parseObject(sb.toString(), Settings.class);
+
+        //更新infos的Compile
+        if(settings.getLanguage().equals(JAVA)) {
+            compiler = new JavaCompiler();
+            log.info("Compiler load in Java");
+        }
+        else if(settings.getLanguage().equals(CPP)) {
+            compiler = new CPPCompiler();
+            log.info("Compiler load in CPP");
+        }
+        else
+            compiler = new JavaCompiler();
     }
 
     /**
