@@ -1,6 +1,11 @@
 package com.azathorpe.cci.impls;
 
+import com.alibaba.fastjson2.JSON;
 import com.azathorpe.cci.model.Question;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * 存储文件的接口，定义了保存题目信息和测试数据的方法
@@ -21,7 +26,22 @@ public interface Impls {
      * @param question
      * @param path
      */
-    String saveTests(Question question,String path);
+    default String saveTests(Question question,String path){
+        String targetFolder = path + "/.cci_questions/" + question.getGroup(),fileName = question.getName() + ".json";
+        File file = new File(targetFolder);
+        if (!file.exists())
+            file.mkdirs();
+        file = new File(targetFolder + "/" + fileName);
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(JSON.toJSONString(question));
+            fileWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return targetFolder + "/" + fileName;
+    }
 
     String getQuestionDatas(String currentFilePath);
 

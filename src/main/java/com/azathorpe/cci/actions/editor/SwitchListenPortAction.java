@@ -14,7 +14,7 @@ import com.intellij.openapi.ui.Messages;
 public class SwitchListenPortAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
-        if(SocketService.isIsRunning()) {
+        if(SocketService.isRunning()) {
             SocketService.stopServer();
             Messages.showInfoMessage("Stopped the Service", "Listen Port Func Is Stopped..");
             System.out.println("Stopped the Service");

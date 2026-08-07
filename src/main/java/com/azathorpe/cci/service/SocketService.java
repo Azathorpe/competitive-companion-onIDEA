@@ -8,18 +8,16 @@ import com.azathorpe.cci.utils.PersistentStorage;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.MessageDialogBuilder;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
+import java.net.SocketException;
 
 /**
  * @author Azathorpe
@@ -28,22 +26,19 @@ import java.util.Arrays;
 public class SocketService {
     private static final int port = 10043;
 
-    private static boolean isRunning = false;
+    private static volatile boolean isRunning = false;
+    private static ServerSocket serverSocket;
+    private static Thread serverThread;
 
     private static final Logger LOGGER = Logger.getInstance(SocketService.class);
 
     /**
      * 实际使用这些数据的函数，单独抽出来是为了方便测试
-     *
-     * @param buffer StringBuilder containing the json data received from Competitive Companion
      */
     private static void runImpl(String buffer) {
         Debugger.log("Starting SocketService: ", buffer);
-        //把buffer传给JsonParser解析，得到题目信息
         Question question = JSON.parseObject(buffer, Question.class);
-        //把题目信息传给ProblemCreator创建题目
         String problemFile = PersistentStorage.createProblemFile(question);
-        //把题目信息传给TestCaseCreator创建测试用例
         String testDataFile = PersistentStorage.createTestDataFile(question);
 
         LocalFileSystem.getInstance().refresh(false);
@@ -54,51 +49,58 @@ public class SocketService {
                             "A new problem has been received from Competitive Companion. Do you want to open it?")
                     .ask(Infos.getProject());
 
-            if(ok && vif != null)
+            if (ok && vif != null)
                 FileEditorManager.getInstance(Infos.getProject()).openFile(vif, true);
-
         });
-
-
     }
 
-
     /**
-     * 开始服务
+     * 开始监听端口
      */
     public static void startServer() {
-        LOGGER.info("Starting SocketService");
-        LOGGER.info("Listening on port: " + port);
-        LOGGER.info(String.valueOf(Infos.settings));
+        if (isRunning) return;
 
-        if (!isRunning) {
-            isRunning = true;
-            Thread thread = new Thread(() -> {
-                try (ServerSocket client = new ServerSocket(port)) {
-                    while (isRunning) {
-                        try (Socket server = client.accept()) {
-                            System.out.println("New connection accepted " + server.getInetAddress() + ":" + server.getPort());
-                            onReceive(server);
-                        }
+        LOGGER.info("Starting SocketService on port: " + port);
+        isRunning = true;
+        serverThread = new Thread(() -> {
+            try {
+                serverSocket = new ServerSocket(port);
+                while (isRunning) {
+                    try (Socket socket = serverSocket.accept()) {
+                        LOGGER.info("New connection: " + socket.getInetAddress() + ":" + socket.getPort());
+                        onReceive(socket);
+                    } catch (SocketException e) {
+                        // serverSocket.close() 被 stopServer() 调用，正常退出
                     }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
-            }, "SocketService-Thread");
-            thread.start();
-        }
+            } catch (IOException e) {
+                if (isRunning) LOGGER.error("Socket error", e);
+            } finally {
+                closeServerSocket();
+            }
+        }, "SocketService-Thread");
+        serverThread.setDaemon(true);
+        serverThread.start();
     }
 
     /**
-     * Stop Server at any time
+     * 停止监听 — 关闭 ServerSocket 让 accept() 立刻返回
      */
     public static void stopServer() {
         isRunning = false;
+        closeServerSocket();
     }
 
-    // When the port is received json from Competitive Companion
-    // Do it own work
-    public static void onReceive(Socket client) {
+    private static void closeServerSocket() {
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException ignored) {
+        }
+    }
+
+    private static void onReceive(Socket client) {
         StringBuilder builder = new StringBuilder();
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -114,7 +116,7 @@ public class SocketService {
         runImpl(builder.toString());
     }
 
-    public static boolean isIsRunning() {
+    public static boolean isRunning() {
         return isRunning;
     }
 }

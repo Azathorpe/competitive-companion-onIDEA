@@ -1,10 +1,18 @@
 package com.azathorpe.cci.utils;
 
 import com.alibaba.fastjson2.JSON;
+import com.azathorpe.cci.impls.*;
 import com.azathorpe.cci.model.Settings;
 import com.azathorpe.cci.service.SocketService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import com.azathorpe.cci.runner.compiler.CCompiler;
+import com.azathorpe.cci.runner.compiler.CPPCompiler;
+import com.azathorpe.cci.runner.compiler.Compiler;
+import com.azathorpe.cci.runner.compiler.JavaCompiler;
+import com.azathorpe.cci.runner.compiler.PythonInterpreter;
 
 import java.io.*;
 
@@ -14,10 +22,20 @@ import java.io.*;
  * @version 1.1
  */
 public class Infos {
-    public static final String userConfigPath = System.getProperty("user.home") + "\\.cci\\properties.json";
-    public static final String userTemplateFolder = System.getProperty("user.home") + "\\.cci\\templates";
+    public static final String userConfigPath = System.getProperty("user.home") + File.separator + ".cci" + File.separator + "properties.json";
+    public static final String userTemplateFolder = System.getProperty("user.home") + File.separator + ".cci" + File.separator + "templates";
+    public static final String JAVA = "Java";
+    public static final String C = "C";
+    public static final String CPP = "C++";
+    public static final String PYTHON = "Python";
+    private static final Log log = LogFactory.getLog(Infos.class);
 
     public static Settings settings = new Settings();
+    /**
+     * 保存题目信息和测试数据的实现类，根据不同的编程语言来实现这个接口
+     */
+    public static Impls saveImpls = null;
+    public static Compiler compiler = null;
 
     /**
      * 更新用户的配置信息，重新读取配置文件并解析成Settings对象
@@ -50,6 +68,28 @@ public class Infos {
         }
 
         settings = JSON.parseObject(sb.toString(), Settings.class);
+
+        //更新infos的Compile
+        //更新infos的Impl
+        switch (settings.getLanguage()) {
+            case C -> {
+                compiler = new CCompiler();
+                saveImpls = new CImpl();
+            }
+            case CPP -> {
+                compiler = new CPPCompiler();
+                saveImpls = new CppImpl();
+            }
+            case PYTHON -> {
+                compiler = new PythonInterpreter();
+                saveImpls = new PythonImpl();
+            }
+            default -> {
+                compiler = new JavaCompiler();
+                saveImpls = new JavaImpl();
+            }
+        }
+
     }
 
     /**
