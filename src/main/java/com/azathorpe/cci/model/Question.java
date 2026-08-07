@@ -1,5 +1,7 @@
 package com.azathorpe.cci.model;
 
+import java.util.Arrays;
+
 /**
  * Many get&et methods are required for fastjson to work properly
  *
@@ -16,6 +18,12 @@ public class Question {
     int timeLimit;
     TestCase[] tests;
     String testType;
+
+    public void addNewTestCase(TestCase tCase){
+        TestCase[] newer = Arrays.copyOf(tests, tests.length + 1);
+        newer[newer.length - 1] = tCase;
+        this.tests = newer;
+    }
 
     public String getName() {
         return name;

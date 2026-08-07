@@ -5,6 +5,8 @@ public class TestCase {
     String output;
 
     public TestCase() {
+        this.input = "";
+        this.output = "";
     }
 
     public TestCase(String input, String output) {
