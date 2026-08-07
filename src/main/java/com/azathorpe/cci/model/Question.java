@@ -30,7 +30,7 @@ public class Question {
     }
 
     public void setName(String name) {
-        this.name = name.replaceAll(" ", "_")
+        this.name = name.replace(" ", "_")
                 .replace("-", "")
                 .replace(".", "")
                 .replace("(", "")
