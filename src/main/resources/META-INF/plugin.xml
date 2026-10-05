@@ -8,7 +8,7 @@
     <name>Competitive-Companion-OnIDEA</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor url="https://www.azazel.icu">Azathorpe</vendor>
+    <vendor url="https://space.bilibili.com/204828664">BiliBili@翎肆忤鸠</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
@@ -59,6 +59,8 @@
 
         <toolWindow factoryClass="com.azathorpe.cci.window.WindowFactory" id="cci" anchor="left" secondary="true"
                     icon="com.azathorpe.cci.icons.CCIIcons.CCI_ICON"/>
+
+        <postStartupActivity implementation="com.azathorpe.cci.listener.StartUp"/>
     </extensions>
     
     <idea-version since-build="231.0"/>
