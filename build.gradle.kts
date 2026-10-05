@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.azathorpe"
-version = "1.0"
+version = "1.1"
 
 repositories {
     mavenCentral()
@@ -38,7 +38,8 @@ intellijPlatform {
         }
 
         changeNotes = """
-            Initial version
+            1.1: Implemented local compilation and running of Java, C, C++languages, as well as running of Python
+            1.0: Initial version, Accept question information from the browser, parse the question information, and write it to a local folder
         """.trimIndent()
     }
 }
