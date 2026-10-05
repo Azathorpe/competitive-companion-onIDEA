@@ -28,7 +28,7 @@ public class Template {
      */
     public static void copyTemplate(String targetPath, Question question) {
         //确保模板文件夹存在
-        FilesUtils.folderInitialize(Infos.userTemplateFolder);
+        FilesUtils.folderInitialize(Infos.userTemplateFolder.toString());
 
         //替换变量
         //获取所有替换的变量

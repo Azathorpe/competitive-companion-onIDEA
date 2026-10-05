@@ -134,16 +134,4 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
             updating = false;
         }
     }
-
-//    public static void initialization(Project project) {
-//        PersistentStorage.setBasePath(project.getBasePath());
-//        //设置自动监听端口
-//        Infos.updateSettings();
-//        if (Infos.settings.getAutoFetchProblems().equals("true")) {
-//            SocketService.startServer();
-//        } else {
-//            SocketService.stopServer();
-//        }
-//    }
-
 }

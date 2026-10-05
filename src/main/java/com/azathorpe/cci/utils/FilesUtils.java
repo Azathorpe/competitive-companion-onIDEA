@@ -48,6 +48,8 @@ public class FilesUtils {
         if (currentFilePath.equals("NOT_DEFINED")) {
             return null;
         }
+        if (currentFilePath.endsWith(".json"))
+            return null;
         String questionDataPath = Infos.saveImpls.getQuestionDatas(currentFilePath);
         if (!new File(questionDataPath).exists()) {
             return null;

@@ -11,12 +11,6 @@ import java.io.File;
  * 持久化存储
  */
 public class PersistentStorage {
-
-    /**
-     * 基本的配置文件路径，存储在用户的home目录下的.cci文件夹中
-     */
-    static String settingsPath = System.getProperty("user.home") + "/.cci/";
-
     static String basePath = Infos.getProject().getBasePath();
 
     static String lastChangedFilePath = "";
@@ -57,17 +51,6 @@ public class PersistentStorage {
             throw new RuntimeException("Save implementation is not defined, please call WindowFactory.projectNeeded(project) first");
         }
         return Infos.saveImpls.saveTests(question,basePath);
-    }
-
-    public static String getSettingsPath() {
-        if(settingsPath.equals("NOT_DEFINED")){
-            throw new RuntimeException("Settings path is not defined, please call WindowFactory.projectNeeded(project) first");
-        }
-        return settingsPath;
-    }
-
-    public static void setSettingsPath(String settingsPath) {
-        PersistentStorage.settingsPath = settingsPath;
     }
 
     public static String getBasePath() {
