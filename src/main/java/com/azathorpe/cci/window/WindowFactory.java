@@ -6,6 +6,7 @@ import com.azathorpe.cci.utils.FilesUtils;
 import com.azathorpe.cci.utils.JdkPathUtil;
 import com.azathorpe.cci.utils.PersistentStorage;
 import com.azathorpe.cci.window.panels.QuestionPane;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
@@ -47,55 +48,62 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
 
     public static void flashToolWindow(String currentFilePath) {
         if (toolWindow == null) return;
-        ContentManager contentManager = toolWindow.getContentManager();
-        Question currentQuestionData = FilesUtils.getCurrentQuestionData(currentFilePath);
+        //确保toolWindow已经初始化
+        if (!toolWindow.isVisible())
+            toolWindow.show();
 
-        // First-time initialization: create content and add to tool window
-        if (!initialized || contentManager.getContentCount() == 0) {
-            mainPanel.removeAll();
+        ApplicationManager.getApplication().invokeLater(() -> {
 
-            // Put questionPanel directly in CENTER — each tab's content wraps its own JBScrollPane
-            mainPanel.add(questionPanel, BorderLayout.CENTER);
-            mainPanel.add(titlePanel, BorderLayout.NORTH);
+            ContentManager contentManager = toolWindow.getContentManager();
+            Question currentQuestionData = FilesUtils.getCurrentQuestionData(currentFilePath);
 
-            //question panel的添加新的测试用例功能
-            questionPanel.addChangeListener((e) -> {
-                if (updating) return;
-                int tabCount = questionPanel.getTabCount();
-                if (tabCount > 0 && (tabCount - 1) == questionPanel.getSelectedIndex()) {
-                    // 不能捕获外部的 currentQuestionData，因为 lambda 只注册一次，
-                    // 捕获的是第一次 "NOT_DEFINED" 调用时的 null
-                    String file = PersistentStorage.getLastChangedFilePath();
-                    Question data = FilesUtils.getCurrentQuestionData(file);
-                    if (data != null) {
-                        data.addNewTestCase(new TestCase());
-                        PersistentStorage.createTestDataFile(data);
-                        updateQuestionPanel(data, file);
+            // First-time initialization: create content and add to tool window
+            if (!initialized || contentManager.getContentCount() == 0) {
+                mainPanel.removeAll();
+
+                // Put questionPanel directly in CENTER — each tab's content wraps its own JBScrollPane
+                mainPanel.add(questionPanel, BorderLayout.CENTER);
+                mainPanel.add(titlePanel, BorderLayout.NORTH);
+
+                //question panel的添加新的测试用例功能
+                questionPanel.addChangeListener((e) -> {
+                    if (updating) return;
+                    int tabCount = questionPanel.getTabCount();
+                    if (tabCount > 0 && (tabCount - 1) == questionPanel.getSelectedIndex()) {
+                        // 不能捕获外部的 currentQuestionData，因为 lambda 只注册一次，
+                        // 捕获的是第一次 "NOT_DEFINED" 调用时的 null
+                        String file = PersistentStorage.getLastChangedFilePath();
+                        Question data = FilesUtils.getCurrentQuestionData(file);
+                        if (data != null) {
+                            data.addNewTestCase(new TestCase());
+                            PersistentStorage.createTestDataFile(data);
+                            updateQuestionPanel(data, file);
+                        }
                     }
-                }
-            });
+                });
 
-            ContentFactory contentFactory = ContentFactory.getInstance();
-            Content content = contentFactory.createContent(mainPanel, "", false);
-            contentManager.addContent(content);
+                ContentFactory contentFactory = ContentFactory.getInstance();
+                Content content = contentFactory.createContent(mainPanel, "", false);
+                contentManager.addContent(content);
 
-            initialized = true;
-        }
+                initialized = true;
+            }
 
-        updateQuestionPanel(currentQuestionData, currentFilePath);
+            updateQuestionPanel(currentQuestionData, currentFilePath);
 
-        // Update title bar
-        titlePanel.removeAll();
-        titlePanel.setLayout(new BorderLayout());
-        if (currentQuestionData != null) {
-            titlePanel.add(new JLabel(currentQuestionData.getGroup()), BorderLayout.NORTH);
-            titlePanel.add(new JLabel(currentQuestionData.getName()), BorderLayout.CENTER);
-        }
+            // Update title bar
+            titlePanel.removeAll();
+            titlePanel.setLayout(new BorderLayout());
+            if (currentQuestionData != null) {
+                titlePanel.add(new JLabel(currentQuestionData.getGroup()), BorderLayout.NORTH);
+                titlePanel.add(new JLabel(currentQuestionData.getName()), BorderLayout.CENTER);
+            }
 
 
-        // Refresh UI
-        mainPanel.revalidate();
-        mainPanel.repaint();
+            // Refresh UI
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        });
     }
 
     public static ToolWindow getToolWindow() {
