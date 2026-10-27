@@ -19,7 +19,10 @@ public class SetAsCurrentLanguageTemplate extends AnAction {
         System.out.println(PersistentStorage.getLastChangedFilePath());
 
         //复制文件到模板位置
-        FilesUtils.copyFileTo(new File(PersistentStorage.getLastChangedFilePath()),new File(Infos.userTemplateFolder + "\\" + Infos.settings.getLanguage() + ".template"));
+        FilesUtils.copyFileTo(
+                new File(PersistentStorage.getLastChangedFilePath()),
+                new File(Infos.userTemplateFolder.resolve(Infos.settings.getLanguage()) + ".templates")
+        );
 
     }
 }
