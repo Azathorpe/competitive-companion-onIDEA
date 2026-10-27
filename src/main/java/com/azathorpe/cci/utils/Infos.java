@@ -3,16 +3,12 @@ package com.azathorpe.cci.utils;
 import com.alibaba.fastjson2.JSON;
 import com.azathorpe.cci.impls.*;
 import com.azathorpe.cci.model.Settings;
+import com.azathorpe.cci.runner.compiler.*;
 import com.azathorpe.cci.service.SocketService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.azathorpe.cci.runner.compiler.CCompiler;
-import com.azathorpe.cci.runner.compiler.CPPCompiler;
-import com.azathorpe.cci.runner.compiler.Compiler;
-import com.azathorpe.cci.runner.compiler.JavaCompiler;
-import com.azathorpe.cci.runner.compiler.PythonInterpreter;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -33,6 +29,7 @@ public class Infos {
     public static final String C = "C";
     public static final String CPP = "C++";
     public static final String PYTHON = "Python";
+    public static final String KOTLIN = "Kotlin";
     private static final Log log = LogFactory.getLog(Infos.class);
 
     public static Settings settings = new Settings();
@@ -97,6 +94,10 @@ public class Infos {
             case PYTHON -> {
                 compiler = new PythonInterpreter();
                 saveImpls = new PythonImpl();
+            }
+            case KOTLIN -> {
+                compiler = new KotlinCompiler();
+                saveImpls = new KotlinImpl();
             }
             default -> {
                 compiler = new JavaCompiler();
