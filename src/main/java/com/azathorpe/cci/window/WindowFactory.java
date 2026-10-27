@@ -12,6 +12,7 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.ui.content.Content;
@@ -141,8 +142,29 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
                     questionPanel.setSelectedIndex(0);
                 }
             } else {
+                JPanel placeholderPanel = new JPanel(new BorderLayout());
                 JLabel placeholder = new JLabel("Please Choose Problem First>>", SwingConstants.CENTER);
-                questionPanel.addTab("Info", placeholder);
+                JButton createTestCaseButton = new JButton("or Create New Test Case");
+
+                createTestCaseButton.addActionListener(e -> {
+                    // Handle create test case action
+                    Question newQuestion = new Question();
+                    newQuestion.setGroup("Local Group");
+                    newQuestion.setInteractive("1000");
+                    newQuestion.setMemoryLimit(256);
+                    newQuestion.setTimeLimit(1000);
+                    newQuestion.setName(PersistentStorage.getLastChangedFileName());
+                    newQuestion.setTests(new TestCase[]{new TestCase()});
+                    newQuestion.setUrl("Local File: " + PersistentStorage.getLastChangedFilePath());
+                    PersistentStorage.createProblemFile(newQuestion);
+                    PersistentStorage.createTestDataFile(newQuestion);
+                    updateQuestionPanel(newQuestion, PersistentStorage.getLastChangedFilePath());
+                });
+
+                placeholderPanel.add(placeholder, BorderLayout.CENTER);
+                placeholderPanel.add(createTestCaseButton, BorderLayout.SOUTH);
+                questionPanel.addTab("Info", placeholderPanel);
+
                 LOGGER.info("No question data found for file: " + currentFilePath);
             }
         } finally {

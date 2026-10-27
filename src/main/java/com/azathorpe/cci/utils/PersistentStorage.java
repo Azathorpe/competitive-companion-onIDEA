@@ -16,6 +16,8 @@ public class PersistentStorage {
 
     static String lastChangedFilePath = "";
 
+    static String lastChangedFileName = "";
+
     /**
      * 测试用例的位置
      */
@@ -38,7 +40,7 @@ public class PersistentStorage {
      */
     public static String createProblemFile(Question question) {
         //清除当前文件的内容，写入题目的基本信息
-        if(Infos.saveImpls == null){
+        if (Infos.saveImpls == null) {
             throw new RuntimeException("Save implementation is not defined, please call WindowFactory.projectNeeded(project) first");
         }
         return Infos.saveImpls.saveProblem(question, basePath);
@@ -48,14 +50,14 @@ public class PersistentStorage {
      * 新建一个测试数据文件，内容为题目的测试数据
      */
     public static String createTestDataFile(Question question) {
-        if (Infos.saveImpls == null){
+        if (Infos.saveImpls == null) {
             throw new RuntimeException("Save implementation is not defined, please call WindowFactory.projectNeeded(project) first");
         }
-        return Infos.saveImpls.saveTests(question,basePath);
+        return Infos.saveImpls.saveTests(question, basePath);
     }
 
     public static String getBasePath() {
-        if(basePath.equals("NOT_DEFINED")){
+        if (basePath.equals("NOT_DEFINED")) {
             throw new RuntimeException("Base path is not defined, please call WindowFactory.projectNeeded(project) first");
         }
         return basePath;
@@ -70,7 +72,11 @@ public class PersistentStorage {
         return lastChangedFilePath;
     }
 
-    public static String getCompilePath(){
+    public static String getLastChangedFileName() {
+        return lastChangedFileName;
+    }
+
+    public static String getCompilePath() {
         File file = new File(basePath + compilePath);
         if (!file.exists())
             file.mkdirs();
@@ -79,5 +85,9 @@ public class PersistentStorage {
 
     public static void setLastChangedFilePath(String lastChangedFilePath) {
         PersistentStorage.lastChangedFilePath = lastChangedFilePath;
+    }
+
+    public static void setLastChangedFileName(String lastChangedFileName) {
+        PersistentStorage.lastChangedFileName = lastChangedFileName;
     }
 }

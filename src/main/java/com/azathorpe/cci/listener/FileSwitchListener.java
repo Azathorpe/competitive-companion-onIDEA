@@ -27,6 +27,7 @@ public class FileSwitchListener implements FileEditorManagerListener {
                 WindowFactory.flashToolWindow(event.getNewFile().getPath());
                 System.out.println("File switched to: " + event.getNewFile().getPath());
                 PersistentStorage.setLastChangedFilePath(event.getNewFile().getPath());
+                PersistentStorage.setLastChangedFileName(event.getNewFile().getName());
             }else{
                 LOGGER.info("No file is currently selected.");
                 //是Null 我就不处理了
