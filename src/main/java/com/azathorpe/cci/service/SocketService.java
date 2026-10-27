@@ -5,6 +5,7 @@ import com.azathorpe.cci.model.Question;
 import com.azathorpe.cci.utils.Debugger;
 import com.azathorpe.cci.utils.Infos;
 import com.azathorpe.cci.utils.PersistentStorage;
+import com.azathorpe.cci.window.WindowFactory;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -47,10 +48,10 @@ public class SocketService {
         ApplicationManager.getApplication().invokeLater(() -> {
             boolean ok = MessageDialogBuilder.yesNo("New Problem Received",
                             "A new problem has been received from Competitive Companion. Do you want to open it?")
-                    .ask(Infos.getProject());
+                    .ask(WindowFactory.getProject());
 
             if (ok && vif != null)
-                FileEditorManager.getInstance(Infos.getProject()).openFile(vif, true);
+                FileEditorManager.getInstance(WindowFactory.getProject()).openFile(vif, true);
         });
     }
 

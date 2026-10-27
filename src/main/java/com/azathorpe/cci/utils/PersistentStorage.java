@@ -3,6 +3,7 @@ package com.azathorpe.cci.utils;
 import com.azathorpe.cci.impls.Impls;
 import com.azathorpe.cci.impls.JavaImpl;
 import com.azathorpe.cci.model.Question;
+import com.azathorpe.cci.window.WindowFactory;
 import com.intellij.openapi.diagnostic.Logger;
 
 import java.io.File;
@@ -11,7 +12,7 @@ import java.io.File;
  * 持久化存储
  */
 public class PersistentStorage {
-    static String basePath = Infos.getProject().getBasePath();
+    static String basePath = "NOT_DEFINED";
 
     static String lastChangedFilePath = "";
 
@@ -62,6 +63,7 @@ public class PersistentStorage {
 
     public static void setBasePath(String basePath) {
         PersistentStorage.basePath = basePath;
+        System.out.println(("Base path set to: " + PersistentStorage.getBasePath()));
     }
 
     public static String getLastChangedFilePath() {

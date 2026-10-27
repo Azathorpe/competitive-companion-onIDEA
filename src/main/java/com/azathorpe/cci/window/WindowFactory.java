@@ -110,6 +110,13 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
         return toolWindow;
     }
 
+    public static Project getProject() {
+        if (toolWindow == null) {
+            throw new RuntimeException("ToolWindow is not initialized yet.");
+        }
+        return toolWindow.getProject();
+    }
+
     public static void updateQuestionPanel(Question currentQuestionData, String currentFilePath) {
         updating = true;
         try {

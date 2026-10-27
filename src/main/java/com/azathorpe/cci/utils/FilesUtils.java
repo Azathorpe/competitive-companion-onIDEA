@@ -50,6 +50,8 @@ public class FilesUtils {
         }
         if (currentFilePath.endsWith(".json"))
             return null;
+        if(Infos.saveImpls == null)
+            return null;
         String questionDataPath = Infos.saveImpls.getQuestionDatas(currentFilePath);
         if (!new File(questionDataPath).exists()) {
             return null;

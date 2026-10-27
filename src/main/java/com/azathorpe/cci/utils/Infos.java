@@ -48,10 +48,19 @@ public class Infos {
     public static void updateSettings(){
         //检查文件是否存在
         try {
-            Files.createDirectories(userConfigPath);
+            Files.createDirectories(userConfigPath.getParent());
         } catch (IOException e) {
             log.info("文件夹已存在,不需要额外创建了");
         }
+
+        if(Files.exists(userConfigPath)){
+            log.info("User config file found, loading settings...");
+        }else {
+            log.info("User config file not found, creating default settings...");
+            saveSettings(settings);
+        }
+
+        log.info("User config path: " + userConfigPath.toString());
 
         //读取用户的配置信息，如果没有找到配置文件或者配置文件中没有语言信息，则使用默认的语言（Java）
         StringBuilder sb = new StringBuilder();
@@ -115,19 +124,8 @@ public class Infos {
      * 向上帝祈祷不会出错吧 ...
      * @return ...
      */
+    @Deprecated()
     public static Project getProject() {
         return ProjectManager.getInstance().getOpenProjects()[0];
-    }
-
-    static {
-        //读取用户的配置信息，如果没有找到配置文件或者配置文件中没有语言信息，则使用默认的语言（Java）
-        Infos.updateSettings();
-
-        //TODO: 可能存在的BUG 开始的时候用户没有配置文件，导致Infos.settings为null，调用getAutoFetchProblems方法会抛出NullPointerException
-        if (Infos.settings.getAutoFetchProblems().equals("true")) {
-            SocketService.startServer();
-        } else {
-            SocketService.stopServer();
-        }
     }
 }
