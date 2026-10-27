@@ -19,7 +19,7 @@ public class Question {
     TestCase[] tests;
     String testType;
 
-    public void addNewTestCase(TestCase tCase){
+    public void addNewTestCase(TestCase tCase) {
         TestCase[] newer = Arrays.copyOf(tests, tests.length + 1);
         newer[newer.length - 1] = tCase;
         this.tests = newer;
@@ -38,7 +38,9 @@ public class Question {
                 .replace("[", "")
                 .replace("]", "")
                 .replace(" ", "")
-                .replace("+", "");
+                .replace("+", "")
+                .replace("'", "")
+                .replace(",", "");
     }
 
     public String getGroup() {
@@ -54,7 +56,9 @@ public class Question {
                 .replace("[", "")
                 .replace("]", "")
                 .replace(" ", "")
-                .replace("+", "");
+                .replace("+", "")
+                .replace("'", "")
+                .replace(",", "");
     }
 
     public String getUrl() {
