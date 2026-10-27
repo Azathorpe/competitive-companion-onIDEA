@@ -153,7 +153,7 @@ public class WindowFactory implements ToolWindowFactory, DumbAware {
                     newQuestion.setInteractive("1000");
                     newQuestion.setMemoryLimit(256);
                     newQuestion.setTimeLimit(1000);
-                    newQuestion.setName(PersistentStorage.getLastChangedFileName());
+                    newQuestion.setName(PersistentStorage.getLastChangedFileName().split("\\.")[0]);
                     newQuestion.setTests(new TestCase[]{new TestCase()});
                     newQuestion.setUrl("Local File: " + PersistentStorage.getLastChangedFilePath());
                     PersistentStorage.createProblemFile(newQuestion);
