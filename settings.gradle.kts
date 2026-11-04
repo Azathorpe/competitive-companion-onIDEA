@@ -1,1 +1,1 @@
-rootProject.name = "competitive-companion-withIDEA"
+rootProject.name = "Competitive Problem Receiver"

@@ -51,6 +51,10 @@ tasks {
         targetCompatibility = "21"
     }
 
+    buildSearchableOptions{
+        enabled = false
+    }
+
     // Build a single fat JAR that contains all runtime dependencies and the plugin resources
     // Keep META-INF/plugin.xml (don't exclude the whole META-INF folder) but exclude signature files
     jar {

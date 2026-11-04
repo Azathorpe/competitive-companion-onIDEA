@@ -1,11 +1,11 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-    <id>com.azathorpe.competitive-companion-onIDEA</id>
+    <id>com.azathorpe.competitive-problem-receiver</id>
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-name -->
-    <name>Competitive-Companion-OnIDEA</name>
+    <name>Competitive Problem Receiver</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor url="https://space.bilibili.com/204828664">BiliBili@翎肆忤鸠</vendor>
@@ -13,16 +13,11 @@
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
     <description><![CDATA[
-        A simple plugin to integrate Competitive Companion with JetBrains IDEs.
+        A powerful IDEA plugin that acts as a bridge for competitive programmers. It listens for incoming problem data sent by the popular Competitive Companion browser extension and automatically parses it. Seamlessly fetch, view, and manage your programming contest problems directly within your IDE without leaving your workflow.
         <br/>
-        It allows you to fetch competitive programming problems directly into your IDE for a seamless coding experience.
+        一个强大的 IDEA 插件，作为算法竞赛选手的桥梁。它监听由流行的 Competitive Companion 浏览器扩展发送的题目数据并自动解析。无需离开工作流，即可在 IDE 中无缝获取、查看和管理你的编程竞赛题目
         <br/>
-        Thank 4 ur use!
-        <br/>
-        If u find any bugs or have suggestions, feel free to open an issue on the GitHub repository:
-            https://github.com/Azathorpe/competitive-companion-onIDEA
-        <br/><br/>
-        一个简单的插件，能够将 Competitive Companion 与 JetBrains IDE 集成。它允许您直接在 IDE 中获取竞赛编程问题，以实现无缝的编码体验。
+        Thanks for ur using! If you find any bugs or have any suggestions, please feel free to open an issue on the GitHub repository:
         <br/>
         感谢使用！如果您发现任何错误或有任何建议，请随时在 GitHub 仓库上打开一个 issue：
             https://github.com/Azathorpe/competitive-companion-onIDEA
@@ -54,7 +49,7 @@
         <applicationConfigurable
                 parentId="tools"
                 instance="com.azathorpe.cci.settings.CCISettingsConfigurable"
-                displayName="Competitive-Companion-withJetBrainsDevTool"
+                displayName="Competitive Problem Receiver"
                 id="cci.settings"/>
 
         <toolWindow factoryClass="com.azathorpe.cci.window.WindowFactory" id="cci" anchor="left" secondary="true"
