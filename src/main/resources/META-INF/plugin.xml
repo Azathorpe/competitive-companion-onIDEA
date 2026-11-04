@@ -50,10 +50,10 @@
                 parentId="tools"
                 instance="com.azathorpe.cpr.settings.CCISettingsConfigurable"
                 displayName="Competitive Problem Receiver"
-                id="cci.settings"/>
+                id="cpr.settings"/>
 
-        <toolWindow factoryClass="com.azathorpe.cpr.window.WindowFactory" id="cci" anchor="left" secondary="true"
-                    icon="com.azathorpe.cpr.icons.CCIIcons.CCI_ICON"/>
+        <toolWindow factoryClass="com.azathorpe.cpr.window.WindowFactory" id="cpr" anchor="left" secondary="true"
+                    icon="com.azathorpe.cpr.icons.CPRIcons.CCI_ICON"/>
 
         <postStartupActivity implementation="com.azathorpe.cpr.listener.StartUp"/>
     </extensions>
@@ -65,24 +65,24 @@
     </applicationListeners>
 
     <actions>
-        <action id="cci.editor.setCurrentLanguageTemplateAction" class="com.azathorpe.cpr.actions.editor.SetAsCurrentLanguageTemplate"
+        <action id="cpr.editor.setCurrentLanguageTemplateAction" class="com.azathorpe.cpr.actions.editor.SetAsCurrentLanguageTemplate"
                 text="Set Current Language Template" description="Set current language template">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 
-        <action id="cci.utils.switchListenPortAction" class="com.azathorpe.cpr.actions.editor.SwitchListenPortAction"
+        <action id="cpr.utils.switchListenPortAction" class="com.azathorpe.cpr.actions.editor.SwitchListenPortAction"
                 text="Switch Port Listener Func">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 
-        <action id="cci.editor.GetSubmitFile" class="com.azathorpe.cpr.actions.editor.GetSubmitFile"
+        <action id="cpr.editor.GetSubmitFile" class="com.azathorpe.cpr.actions.editor.GetSubmitFile"
                 text="Get Submit File" description="Get submit file of current problem">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 
-<!--        <group id="cci.editor.menu" class="com.azathorpe.cpr.actions.editor.EditorMenuActionGroup" text="CCI Editor Menu"-->
+<!--        <group id="cpr.editor.menu" class="com.azathorpe.cpr.actions.editor.EditorMenuActionGroup" text="CCI Editor Menu"-->
 <!--               popup="true" description="Description of the action">-->
-<!--&lt;!&ndash;            <REF id="cci.editor.group"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <REF id="cpr.editor.group"/>&ndash;&gt;-->
 <!--            <add-to-group group-id="EditorPopupMenu" anchor="first"/>-->
 <!--        </group>-->
     </actions>
