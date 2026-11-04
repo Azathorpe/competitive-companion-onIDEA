@@ -1,0 +1,131 @@
+package com.azathorpe.cpr.utils;
+
+import com.alibaba.fastjson2.JSON;
+import com.azathorpe.cpr.impls.*;
+import com.azathorpe.cpr.model.Settings;
+import com.azathorpe.cpr.runner.compiler.*;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+/**
+ * 存放用户配置信息的类，包含用户的编程语言、代码模板等信息
+ * 1.1:添加了获取Project
+ * @version 1.1
+ */
+public class Infos {
+    public static final Path userConfigPath = Paths.get(System.getProperty("user.home")).resolve(".cci").resolve("properties.json");
+//    public static final String userConfigPath = System.getProperty("user.home") + File.separator + ".cci" + File.separator + "properties.json";
+//    public static final String userTemplateFolder = System.getProperty("user.home") + File.separator + ".cci" + File.separator + "templates";
+    public static final Path userTemplateFolder = Paths.get(System.getProperty("user.home")).resolve(".cci").resolve("templates");
+    public static final String JAVA = "Java";
+    public static final String C = "C";
+    public static final String CPP = "C++";
+    public static final String PYTHON = "Python";
+    public static final String KOTLIN = "Kotlin";
+    private static final Log log = LogFactory.getLog(Infos.class);
+
+    public static Settings settings = new Settings();
+    /**
+     * 保存题目信息和测试数据的实现类，根据不同的编程语言来实现这个接口
+     */
+    public static Impls saveImpls = null;
+    public static Compiler compiler = null;
+
+    /**
+     * 更新用户的配置信息，重新读取配置文件并解析成Settings对象
+     */
+    public static void updateSettings(){
+        //检查文件是否存在
+        try {
+            Files.createDirectories(userConfigPath.getParent());
+        } catch (IOException e) {
+            log.info("文件夹已存在,不需要额外创建了");
+        }
+
+        if(Files.exists(userConfigPath)){
+            log.info("User config file found, loading settings...");
+        }else {
+            log.info("User config file not found, creating default settings...");
+            saveSettings(settings);
+        }
+
+        log.info("User config path: " + userConfigPath.toString());
+
+        //读取用户的配置信息，如果没有找到配置文件或者配置文件中没有语言信息，则使用默认的语言（Java）
+        StringBuilder sb = new StringBuilder();
+        try {
+            FileReader fr = new FileReader(userConfigPath.toFile());
+            BufferedReader br = new BufferedReader(fr);
+
+            String line;
+            while((line = br.readLine()) != null)
+                sb.append(line);
+
+            br.close();
+            fr.close();
+
+        }catch(FileNotFoundException e) {
+            throw new RuntimeException("User config file not found, please create a properties.json file in " + userConfigPath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        settings = JSON.parseObject(sb.toString(), Settings.class);
+
+        //更新infos的Compile
+        //更新infos的Impl
+        switch (settings.getLanguage()) {
+            case C -> {
+                compiler = new CCompiler();
+                saveImpls = new CImpl();
+            }
+            case CPP -> {
+                compiler = new CPPCompiler();
+                saveImpls = new CppImpl();
+            }
+            case PYTHON -> {
+                compiler = new PythonInterpreter();
+                saveImpls = new PythonImpl();
+            }
+            case KOTLIN -> {
+                compiler = new KotlinCompiler();
+                saveImpls = new KotlinImpl();
+            }
+            default -> {
+                compiler = new JavaCompiler();
+                saveImpls = new JavaImpl();
+            }
+        }
+
+    }
+
+    /**
+     * 保存用户的配置信息，写入配置文件中
+     * @param settings 用户的配置信息
+     */
+    public static void saveSettings(Settings settings) {
+        try {
+            FileWriter fw = new FileWriter(userConfigPath.toFile());
+            fw.write(settings.toString());
+            fw.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 向上帝祈祷不会出错吧 ...
+     * @return ...
+     */
+    @Deprecated()
+    public static Project getProject() {
+        return ProjectManager.getInstance().getOpenProjects()[0];
+    }
+}

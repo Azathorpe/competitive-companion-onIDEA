@@ -48,39 +48,39 @@
         <!--    Setting    -->
         <applicationConfigurable
                 parentId="tools"
-                instance="com.azathorpe.cci.settings.CCISettingsConfigurable"
+                instance="com.azathorpe.cpr.settings.CCISettingsConfigurable"
                 displayName="Competitive Problem Receiver"
                 id="cci.settings"/>
 
-        <toolWindow factoryClass="com.azathorpe.cci.window.WindowFactory" id="cci" anchor="left" secondary="true"
-                    icon="com.azathorpe.cci.icons.CCIIcons.CCI_ICON"/>
+        <toolWindow factoryClass="com.azathorpe.cpr.window.WindowFactory" id="cci" anchor="left" secondary="true"
+                    icon="com.azathorpe.cpr.icons.CCIIcons.CCI_ICON"/>
 
-        <postStartupActivity implementation="com.azathorpe.cci.listener.StartUp"/>
+        <postStartupActivity implementation="com.azathorpe.cpr.listener.StartUp"/>
     </extensions>
     
     <idea-version since-build="231.0"/>
 
     <applicationListeners>
-        <listener class="com.azathorpe.cci.listener.FileSwitchListener" topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
+        <listener class="com.azathorpe.cpr.listener.FileSwitchListener" topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
     </applicationListeners>
 
     <actions>
-        <action id="cci.editor.setCurrentLanguageTemplateAction" class="com.azathorpe.cci.actions.editor.SetAsCurrentLanguageTemplate"
+        <action id="cci.editor.setCurrentLanguageTemplateAction" class="com.azathorpe.cpr.actions.editor.SetAsCurrentLanguageTemplate"
                 text="Set Current Language Template" description="Set current language template">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 
-        <action id="cci.utils.switchListenPortAction" class="com.azathorpe.cci.actions.editor.SwitchListenPortAction"
+        <action id="cci.utils.switchListenPortAction" class="com.azathorpe.cpr.actions.editor.SwitchListenPortAction"
                 text="Switch Port Listener Func">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 
-        <action id="cci.editor.GetSubmitFile" class="com.azathorpe.cci.actions.editor.GetSubmitFile"
+        <action id="cci.editor.GetSubmitFile" class="com.azathorpe.cpr.actions.editor.GetSubmitFile"
                 text="Get Submit File" description="Get submit file of current problem">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 
-<!--        <group id="cci.editor.menu" class="com.azathorpe.cci.actions.editor.EditorMenuActionGroup" text="CCI Editor Menu"-->
+<!--        <group id="cci.editor.menu" class="com.azathorpe.cpr.actions.editor.EditorMenuActionGroup" text="CCI Editor Menu"-->
 <!--               popup="true" description="Description of the action">-->
 <!--&lt;!&ndash;            <REF id="cci.editor.group"/>&ndash;&gt;-->
 <!--            <add-to-group group-id="EditorPopupMenu" anchor="first"/>-->

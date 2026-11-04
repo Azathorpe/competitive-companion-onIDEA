@@ -1,0 +1,90 @@
+package com.azathorpe.cpr.utils;
+
+import com.azathorpe.cpr.model.Question;
+import com.intellij.openapi.diagnostic.Logger;
+
+import java.io.File;
+
+/**
+ * 持久化存储
+ */
+public class PersistentStorage {
+    static String basePath = "NOT_DEFINED";
+
+    static String lastChangedFilePath = "";
+
+    static String lastChangedFileName = "";
+
+    /**
+     * 测试用例的位置
+     */
+    static String testsPath = "/.cci_questions/testData/";
+
+    /**
+     * 已经解决过的问题存储的位置
+     */
+    static String solvedPath = "/.cci_questions/solved/";
+
+    /**
+     * 编译文件 only one
+     */
+    static String compilePath = "/.cci_questions/compile/";
+
+    private static final Logger LOGGER = Logger.getInstance(PersistentStorage.class);
+
+    /**
+     * 新建一个题目文件，内容为题目的基本信息（题目名称、题目链接、时间限制、内存限制等）
+     */
+    public static String createProblemFile(Question question) {
+        //清除当前文件的内容，写入题目的基本信息
+        if (Infos.saveImpls == null) {
+            throw new RuntimeException("Save implementation is not defined, please call WindowFactory.projectNeeded(project) first");
+        }
+        return Infos.saveImpls.saveProblem(question, basePath);
+    }
+
+    /**
+     * 新建一个测试数据文件，内容为题目的测试数据
+     */
+    public static String createTestDataFile(Question question) {
+        if (Infos.saveImpls == null) {
+            throw new RuntimeException("Save implementation is not defined, please call WindowFactory.projectNeeded(project) first");
+        }
+        return Infos.saveImpls.saveTests(question, basePath);
+    }
+
+    public static String getBasePath() {
+        if (basePath.equals("NOT_DEFINED")) {
+            throw new RuntimeException("Base path is not defined, please call WindowFactory.projectNeeded(project) first");
+        }
+        return basePath;
+    }
+
+    public static void setBasePath(String basePath) {
+        PersistentStorage.basePath = basePath;
+        System.out.println(("Base path set to: " + PersistentStorage.getBasePath()));
+    }
+
+    public static String getLastChangedFilePath() {
+        return lastChangedFilePath;
+    }
+
+    public static String getLastChangedFileName() {
+        return lastChangedFileName;
+    }
+
+    public static String getCompilePath() {
+        File file = new File(basePath + compilePath);
+        if (!file.exists())
+            file.mkdirs();
+        return basePath + compilePath;
+    }
+
+    public static void setLastChangedFilePath(String lastChangedFilePath) {
+        PersistentStorage.lastChangedFilePath = lastChangedFilePath;
+    }
+
+    public static void setLastChangedFileName(String lastChangedFileName) {
+        PersistentStorage.lastChangedFileName = lastChangedFileName;
+    }
+}

@@ -1,0 +1,173 @@
+package com.azathorpe.cpr.window;
+
+import com.azathorpe.cpr.model.Question;
+import com.azathorpe.cpr.model.TestCase;
+import com.azathorpe.cpr.utils.FilesUtils;
+import com.azathorpe.cpr.utils.JdkPathUtil;
+import com.azathorpe.cpr.utils.PersistentStorage;
+import com.azathorpe.cpr.window.panels.QuestionPane;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.DumbAware;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.ui.components.JBScrollPane;
+import com.intellij.ui.components.JBTabbedPane;
+import com.intellij.ui.content.Content;
+import com.intellij.ui.content.ContentFactory;
+import com.intellij.ui.content.ContentManager;
+import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * 调整单独的Panel的地方
+ *
+ * @author Azathorpe
+ * @version 1.0
+ */
+public class WindowFactory implements ToolWindowFactory, DumbAware {
+    private static final JPanel mainPanel = new JPanel(new BorderLayout());
+    private static final JBTabbedPane questionPanel = new JBTabbedPane();
+    private static final JPanel titlePanel = new JPanel();
+
+    private static ToolWindow toolWindow;
+    private static boolean initialized = false;
+    private static boolean updating = false;  // 防止 ChangeListener 递归
+
+    private static final Logger LOGGER = Logger.getInstance(WindowFactory.class);
+
+    @Override
+    public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+        WindowFactory.toolWindow = toolWindow;
+        JdkPathUtil.getProjectJdkHomePath(project);
+        flashToolWindow("NOT_DEFINED");
+    }
+
+    public static void flashToolWindow(String currentFilePath) {
+        if (toolWindow == null) return;
+        //确保toolWindow已经初始化
+        if (!toolWindow.isVisible())
+            toolWindow.show();
+
+        ApplicationManager.getApplication().invokeLater(() -> {
+
+            ContentManager contentManager = toolWindow.getContentManager();
+            Question currentQuestionData = FilesUtils.getCurrentQuestionData(currentFilePath);
+
+            // First-time initialization: create content and add to tool window
+            if (!initialized || contentManager.getContentCount() == 0) {
+                mainPanel.removeAll();
+
+                // Put questionPanel directly in CENTER — each tab's content wraps its own JBScrollPane
+                mainPanel.add(questionPanel, BorderLayout.CENTER);
+                mainPanel.add(titlePanel, BorderLayout.NORTH);
+
+                //question panel的添加新的测试用例功能
+                questionPanel.addChangeListener((e) -> {
+                    if (updating) return;
+                    int tabCount = questionPanel.getTabCount();
+                    if (tabCount > 0 && (tabCount - 1) == questionPanel.getSelectedIndex()) {
+                        // 不能捕获外部的 currentQuestionData，因为 lambda 只注册一次，
+                        // 捕获的是第一次 "NOT_DEFINED" 调用时的 null
+                        String file = PersistentStorage.getLastChangedFilePath();
+                        Question data = FilesUtils.getCurrentQuestionData(file);
+                        if (data != null) {
+                            data.addNewTestCase(new TestCase());
+                            PersistentStorage.createTestDataFile(data);
+                            updateQuestionPanel(data, file);
+                        }
+                    }
+                });
+
+                ContentFactory contentFactory = ContentFactory.getInstance();
+                Content content = contentFactory.createContent(mainPanel, "", false);
+                contentManager.addContent(content);
+
+                initialized = true;
+            }
+
+            updateQuestionPanel(currentQuestionData, currentFilePath);
+
+            // Update title bar
+            titlePanel.removeAll();
+            titlePanel.setLayout(new BorderLayout());
+            if (currentQuestionData != null) {
+                titlePanel.add(new JLabel(currentQuestionData.getGroup()), BorderLayout.NORTH);
+                titlePanel.add(new JLabel(currentQuestionData.getName()), BorderLayout.CENTER);
+            }
+
+
+            // Refresh UI
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        });
+    }
+
+    public static ToolWindow getToolWindow() {
+        return toolWindow;
+    }
+
+    public static Project getProject() {
+        if (toolWindow == null) {
+            throw new RuntimeException("ToolWindow is not initialized yet.");
+        }
+        return toolWindow.getProject();
+    }
+
+    public static void updateQuestionPanel(Question currentQuestionData, String currentFilePath) {
+        updating = true;
+        try {
+            questionPanel.removeAll();
+            if (currentQuestionData != null) {
+                LOGGER.info("Current question: " + currentQuestionData.getGroup() + " - " + currentQuestionData.getName());
+
+                for (TestCase test : currentQuestionData.getTests()) {
+                    LOGGER.info("new input :" + test.getInput());
+                    LOGGER.info("new output :" + test.getOutput());
+
+                    int index = questionPanel.getTabCount();
+                    QuestionPane pane = QuestionPane.createPane(test);
+                    JBScrollPane scrollPane = new JBScrollPane(pane);
+                    questionPanel.addTab("Test " + (index + 1), scrollPane);
+                }
+
+                // "+" 标签用于添加新用例
+                questionPanel.addTab("+", new JLabel());
+
+                if (questionPanel.getTabCount() > 0) {
+                    questionPanel.setSelectedIndex(0);
+                }
+            } else {
+                JPanel placeholderPanel = new JPanel(new BorderLayout());
+                JLabel placeholder = new JLabel("Please Choose Problem First>>", SwingConstants.CENTER);
+                JButton createTestCaseButton = new JButton("or Create New Test Case");
+
+                createTestCaseButton.addActionListener(e -> {
+                    // Handle create test case action
+                    Question newQuestion = new Question();
+                    newQuestion.setGroup("Local Group");
+                    newQuestion.setInteractive("1000");
+                    newQuestion.setMemoryLimit(256);
+                    newQuestion.setTimeLimit(1000);
+                    newQuestion.setName(PersistentStorage.getLastChangedFileName().split("\\.")[0]);
+                    newQuestion.setTests(new TestCase[]{new TestCase()});
+                    newQuestion.setUrl("Local File: " + PersistentStorage.getLastChangedFilePath());
+                    PersistentStorage.createProblemFile(newQuestion);
+                    PersistentStorage.createTestDataFile(newQuestion);
+                    updateQuestionPanel(newQuestion, PersistentStorage.getLastChangedFilePath());
+                });
+
+                placeholderPanel.add(placeholder, BorderLayout.CENTER);
+                placeholderPanel.add(createTestCaseButton, BorderLayout.SOUTH);
+                questionPanel.addTab("Info", placeholderPanel);
+
+                LOGGER.info("No question data found for file: " + currentFilePath);
+            }
+        } finally {
+            updating = false;
+        }
+    }
+}
