@@ -54,7 +54,7 @@
         <applicationConfigurable
                 parentId="tools"
                 instance="com.azathorpe.cci.settings.CCISettingsConfigurable"
-                displayName="Competitive-Companion-OnIDEA"
+                displayName="Competitive-Companion-withJetBrainsDevTool"
                 id="cci.settings"/>
 
         <toolWindow factoryClass="com.azathorpe.cci.window.WindowFactory" id="cci" anchor="left" secondary="true"
