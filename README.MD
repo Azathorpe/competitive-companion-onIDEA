@@ -8,8 +8,8 @@
 > 🔗 **Available on JetBrains Marketplace:** [Competitive Problem Receiver](https://plugins.jetbrains.com/plugin/35779-competitive-problem-receiver)
 
 <p align="center">
-  <a href="README.md"><img src="https://img.shields.io/badge/Language-English-blue.svg" alt="English"></a>
-  <a href="README_zh.md"><img src="https://img.shields.io/badge/语言-简体中文-red.svg" alt="简体中文"></a>
+  <a href="README.MD"><img src="https://img.shields.io/badge/Language-English-blue.svg" alt="English"></a>
+  <a href="README_zh.MD"><img src="https://img.shields.io/badge/语言-简体中文-red.svg" alt="简体中文"></a>
 </p>
 
 ## 📖 About the Plugin
