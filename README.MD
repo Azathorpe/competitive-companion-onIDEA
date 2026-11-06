@@ -7,6 +7,11 @@
 
 > 🔗 **Available on JetBrains Marketplace:** [Competitive Problem Receiver](https://plugins.jetbrains.com/plugin/35779-competitive-problem-receiver)
 
+<p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/Language-English-blue.svg" alt="English"></a>
+  <a href="README_zh.md"><img src="https://img.shields.io/badge/语言-简体中文-red.svg" alt="简体中文"></a>
+</p>
+
 ## 📖 About the Plugin
 
 **Competitive Problem Receiver** acts as a bridge between your browser and your IDE. It listens for incoming problem data sent by the popular [Competitive Companion](https://github.com/jmerle/competitive-companion) browser extension, parses it, and saves it directly into your local project workspace.
