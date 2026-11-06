@@ -20,7 +20,7 @@
         Thanks for ur using! If you find any bugs or have any suggestions, please feel free to open an issue on the GitHub repository:
         <br/>
         感谢使用！如果您发现任何错误或有任何建议，请随时在 GitHub 仓库上打开一个 issue：
-            https://github.com/Azathorpe/competitive-companion-onIDEA
+            https://github.com/Azathorpe/Competitive-Problem-Receiver
         ]]>
     </description>
 
@@ -29,7 +29,7 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-change-notes
         <version>1.0.0</version>
         <changes>
-            <change>Initial release of Competitive-companion-onIDEA plugin.</change>
+            <change>Initial release of Competitive-Problem-Receiver plugin.</change>
             <change>Added support for fetching competitive programming problems directly into JetBrains IDEs.</change>
             <change>Implemented a tool window for displaying fetched problems and their details.</change>
             <change>Added settings configurable for customizing plugin behavior.</change>
