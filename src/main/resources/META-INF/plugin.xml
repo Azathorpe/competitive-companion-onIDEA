@@ -21,22 +21,48 @@
         <br/>
         感谢使用！如果您发现任何错误或有任何建议，请随时在 GitHub 仓库上打开一个 issue：
             https://github.com/Azathorpe/Competitive-Problem-Receiver
+
+        <p><b>⚠️ Note:</b> This plugin identifies languages by file extensions. Please configure your default language in <i>Settings -> Tools -> Competitive Problem Receiver</i>.</p>
+        <b>⚠️ 注意：</b> 本插件通过文件后缀来识别语言。请在 <i>设置 -> 工具 -> Competitive Problem Receiver</i> 中设置您的默认语言。初始默认语言为 Java。
         ]]>
     </description>
 
     <change-notes><![CDATA[
-         Change notes displayed on the Plugin Page and IDE Plugin Manager when a new version of the plugin is released.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-change-notes
-        <version>1.0.0</version>
-        <changes>
-            <change>Initial release of Competitive-Problem-Receiver plugin.</change>
-            <change>Added support for fetching competitive programming problems directly into JetBrains IDEs.</change>
-            <change>Implemented a tool window for displaying fetched problems and their details.</change>
-            <change>Added settings configurable for customizing plugin behavior.</change>
-            <change>Improved user interface for better user experience.</change>
-        </changes>
-        ]]>
-    </change-notes>
+        <h3>v1.2 更新 / What's Changed</h3>
+        <b>中文版:</b>
+        <ul>
+            <li>🐧 <b>Linux 修复</b>: 修复了在Linux系统上不能运行的Bug</li>
+            <li>🥺 <b>Kotlin 适配</b>: 增加了对Kotlin的适配(我不会说是因为我想用)</li>
+            <li>➕ <b>手动添加样例</b>: 增加了对非从浏览器传入的题目进行添加样例的功能</li>
+            <li>🏷️ <b>更名</b>: 从 Competitive Companion on IDEA (cci) 改名为 Competitive Problem Receiver (cpr)</li>
+        </ul>
+
+        <b>English Version:</b>
+        <ul>
+            <li>🐧 <b>Linux Support</b>: Fixed a critical bug that caused the plugin to crash on Linux systems.</li>
+            <li>🥺 <b>Kotlin Support</b>: Added Kotlin adaptation... (I won't say it's because I wanted to use it myself, but that's definitely part of it!)</li>
+            <li>➕ <b>Manual Test Cases</b>: You can now manually add sample inputs/outputs for problems that weren't sent from the browser.</li>
+            <li>🏷️ <b>Rebranding</b>: Renamed from "Competitive Companion on IDEA (cci)" to "Competitive Problem Receiver (cpr)".</li>
+        </ul>
+
+        <hr>
+
+        <h3>v1.1 更新</h3>
+        <ul>
+            <li>🛠 Java, C/C++ 的编译运行</li>
+            <li>🐍 Python 的运行</li>
+            <li>📝 样例的添加和 Judge</li>
+            <li>🎨 更好看的提交界面</li>
+            <li>🐞 修改了上个版本的很多BUG</li>
+        </ul>
+
+        <hr>
+
+        <h3>v1.0 初版发布</h3>
+        <ul>
+            <li>可以简单的运行起来了，但是应该存在很多BUG，还没有进行充分的测试，后面慢慢打补丁吧 QAQ</li>
+        </ul>
+    ]]></change-notes>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
@@ -57,15 +83,17 @@
 
         <postStartupActivity implementation="com.azathorpe.cpr.listener.StartUp"/>
     </extensions>
-    
+
     <idea-version since-build="231.0"/>
 
     <applicationListeners>
-        <listener class="com.azathorpe.cpr.listener.FileSwitchListener" topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
+        <listener class="com.azathorpe.cpr.listener.FileSwitchListener"
+                  topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
     </applicationListeners>
 
     <actions>
-        <action id="cpr.editor.setCurrentLanguageTemplateAction" class="com.azathorpe.cpr.actions.editor.SetAsCurrentLanguageTemplate"
+        <action id="cpr.editor.setCurrentLanguageTemplateAction"
+                class="com.azathorpe.cpr.actions.editor.SetAsCurrentLanguageTemplate"
                 text="Set Current Language Template" description="Set current language template">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
@@ -80,10 +108,10 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 
-<!--        <group id="cpr.editor.menu" class="com.azathorpe.cpr.actions.editor.EditorMenuActionGroup" text="CCI Editor Menu"-->
-<!--               popup="true" description="Description of the action">-->
-<!--&lt;!&ndash;            <REF id="cpr.editor.group"/>&ndash;&gt;-->
-<!--            <add-to-group group-id="EditorPopupMenu" anchor="first"/>-->
-<!--        </group>-->
+        <!--        <group id="cpr.editor.menu" class="com.azathorpe.cpr.actions.editor.EditorMenuActionGroup" text="CCI Editor Menu"-->
+        <!--               popup="true" description="Description of the action">-->
+        <!--&lt;!&ndash;            <REF id="cpr.editor.group"/>&ndash;&gt;-->
+        <!--            <add-to-group group-id="EditorPopupMenu" anchor="first"/>-->
+        <!--        </group>-->
     </actions>
 </idea-plugin>
